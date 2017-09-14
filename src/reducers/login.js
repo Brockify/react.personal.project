@@ -3,7 +3,7 @@ const initialState = Immutable({'value': 0, "message": "", "username": "", "pass
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESSFUL':
-      return state.merge({"message": action.data.message, "username": "", "password": "", "logged_in": true})
+      return state.merge({"message": action.data.message, "password": "", "logged_in": true})
     case 'LOGIN_FAIL':
     return state.set("message", action.data.message)
     case 'LOGIN':

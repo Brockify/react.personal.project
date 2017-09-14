@@ -27,7 +27,7 @@ function getLogin(username, password){
       myHeaders.append("Accept", "application/json");
       myHeaders.append("Content-Type", "application/json");
       var myInit = { method: 'GET', headers: myHeaders, cache: 'default' };
-      var myRequest = new Request('http://127.0.0.1:5000/Login/' + username + '/' + password, myInit);
+      var myRequest = new Request('http://198.199.102.156:5000/Login/' + username + '/' + password, myInit);
       const response = fetch(myRequest).then((response) => {
         //check to make sure the response was successful
         if(response.status !== 200){

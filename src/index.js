@@ -17,6 +17,8 @@ import reducer from './reducers/index'
 //Sagas
 import loginSaga from './sagas/LoginSaga'
 import registerSaga from './sagas/RegisterSaga'
+import resetPasswordSaga from './sagas/ResetPasswordSaga'
+
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
 const rootEl = document.getElementById('root')
@@ -43,6 +45,7 @@ const DashboardComponenet = (props) => {
     <Dashboard
       logout={() => store.dispatch({type: "LOGOUT"})}
       logged_in={store.getState().login.logged_in}
+      store={store}
       value={"Dashboard"}
     />
   );
@@ -78,3 +81,4 @@ render()
 store.subscribe(render)
 sagaMiddleware.run(loginSaga)
 sagaMiddleware.run(registerSaga)
+sagaMiddleware.run(resetPasswordSaga)

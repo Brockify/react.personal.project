@@ -12,8 +12,8 @@ mysql = MySQL()
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'Brock114039'
-app.config['MYSQL_DATABASE_DB'] = 'sys'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_DB'] = 'Login'
+app.config['MYSQL_DATABASE_HOST'] = '198.199.102.156'
 mysql.init_app(app)
 
 class HelloWorld(Resource):
@@ -43,9 +43,24 @@ class HelloWorld(Resource):
             return jsonify({"message": "Username already taken. Please try again."})
         else:
             #insert new user
-            cur.execute("INSERT INTO sys.Users(username, password) VALUES(%s, %s)", (username, password))
+            cur.execute("INSERT INTO Users(username, password) VALUES(%s, %s)", (username, password))
             mysql.get_db().commit()
             return jsonify({"message": "Register successful!"})
+
+    @app.route('/ResetPassword/<string:username>/<string:oldPassword>/<string:newPassword>', methods=['POST', 'GET'])
+    def ResetPassword(username, oldPassword, newPassword):
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT Password FROM Users where Username=%s''', (username))
+        rv = cur.fetchone()
+        if(rv == None):
+            return jsonify({"message": "No valid username."})
+        elif(rv[0] != oldPassword):
+            return jsonify({"message": "Old password is incorrect. Try again."})
+        else:
+            #insert new user
+            cur.execute('''UPDATE Users SET Password=%s where Username=%s''', (newPassword, username))
+            mysql.get_db().commit()
+            return jsonify({"message": "Password changed!"})
 
 api.add_resource(HelloWorld, '/')
 
