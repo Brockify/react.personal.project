@@ -51,11 +51,6 @@ class Login extends Component {
               <strong>{status}</strong>
             </Alert>
           </div>
-          <div style={styles.footer}>
-            <p>
-              Login Footer
-            </p>
-          </div>
         </div>
       )
     }

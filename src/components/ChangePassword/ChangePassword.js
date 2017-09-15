@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {Button, Alert} from 'react-bootstrap'
 import styles from './styles'
 
-class ResetPassword extends Component {
+class ChangePassword extends Component {
     alertStyle = "";
     resetButtonStyle = "";
     
@@ -41,7 +41,7 @@ class ResetPassword extends Component {
                 <Button onClick={() => this.props.onResetPassword(this.props.username, this.props.oldPassword, this.props.newPassword, this.props.newConfirmPassword)} onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.resetButtonStyle}  bsSize="large" block>Submit</Button>
                 <div style={styles.alert_div}>
                     <Alert bsStyle={"danger"} style={this.alertStyle}>
-                    <strong>{this.props.status}</strong>
+                        <strong>{this.props.status}</strong>
                     </Alert>
                 </div>
             </form>
@@ -50,7 +50,7 @@ class ResetPassword extends Component {
     }
 }
 
-ResetPassword.propTypes = {
+ChangePassword.propTypes = {
 }
 
-export default ResetPassword
+export default ChangePassword

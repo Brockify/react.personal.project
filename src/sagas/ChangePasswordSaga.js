@@ -1,21 +1,21 @@
 import { put, takeLatest } from 'redux-saga/effects'
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* resetPassword(action) {
+function* changePassword(action) {
    try {
-      var response = yield(getResetPassword(action.data.username, action.data.oldPassword, action.data.newPassword, action.data.newConfirmPassword));
+      var response = yield(getChangePassword(action.data.username, action.data.oldPassword, action.data.newPassword, action.data.newConfirmPassword));
       if(response.message !== null && response.message !== "Password changed!"){
-        yield put({type: "RESET_PASSWORD_FAIL", data: {'message': response.message}});        
+        yield put({type: "CHANGE_PASSWORD_FAIL", data: {'message': response.message}});        
       } else {
-        yield put({type: "RESET_PASSWORD_SUCCESS", data: {'message': response.message}});                      
+        yield put({type: "CHANGE_PASSWORD_SUCCESS", data: {'message': response.message}});                      
       }
    } catch (e) {
       //called if the endpoint is not valid or cannot be hit
-      yield put({type: "RESET_PASSWORD_FAIL", data: {'message': 'Unavailable. Please try again later.'}});
+      yield put({type: "CHANGE_PASSWORD_FAIL", data: {'message': 'Unavailable. Please try again later.'}});
    }
 }
 
-function getResetPassword(username, oldPassword, newPassword, newConfirmPassword){
+function getChangePassword(username, oldPassword, newPassword, newConfirmPassword){
   if(oldPassword === ""){
     return {'message': 'Please enter a valid old password.'}                          
   } else if(newPassword === ""){
@@ -23,7 +23,7 @@ function getResetPassword(username, oldPassword, newPassword, newConfirmPassword
   } else if(newConfirmPassword === ""){
       return {'message': 'Please enter a valid new confirm password.'}                                      
   } else if(newConfirmPassword !== newPassword){
-      return {'message': 'Please make sure the new password and the confirmed new password match.'}  
+      return {'message': 'Make sure the new passwords match.'}  
   } else {
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
@@ -51,8 +51,8 @@ function getResetPassword(username, oldPassword, newPassword, newConfirmPassword
   dispatched while a fetch is already pending, that pending fetch is cancelled
   and only the latest one will be run.
 */
-function* resetPasswordSaga() {
-  yield takeLatest("RESET_PASSWORD", resetPassword);
+function* changePasswordSaga() {
+  yield takeLatest("CHANGE_PASSWORD", changePassword);
 }
 
-export default resetPasswordSaga;
+export default changePasswordSaga;

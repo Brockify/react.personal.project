@@ -17,7 +17,7 @@ import reducer from './reducers/index'
 //Sagas
 import loginSaga from './sagas/LoginSaga'
 import registerSaga from './sagas/RegisterSaga'
-import resetPasswordSaga from './sagas/ResetPasswordSaga'
+import changePasswordSaga from './sagas/ChangePasswordSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
@@ -72,6 +72,11 @@ const render = () => ReactDOM.render(
       <Route exact path="/" component={LoginComponent}/>
       <Route path="/register" component={RegisterComponent}/>
       <Route path="/dashboard" component={DashboardComponenet}/>
+      <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
+        <p>
+          Login Footer
+        </p>
+      </div>
     </div>
   </Router>,
   rootEl
@@ -81,4 +86,4 @@ render()
 store.subscribe(render)
 sagaMiddleware.run(loginSaga)
 sagaMiddleware.run(registerSaga)
-sagaMiddleware.run(resetPasswordSaga)
+sagaMiddleware.run(changePasswordSaga)
