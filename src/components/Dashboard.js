@@ -7,6 +7,10 @@ import Login from './Login/Login'
 
 class Dashboard extends Component {
 
+  constructor(props){
+    super(props);
+  }
+
   render() {
     //styles for navbar
     const link_style = {"margin": "0px", "padding": "0px", "color": "#fff", "textDecoration": "none"}
@@ -24,6 +28,7 @@ class Dashboard extends Component {
         onLogin={(username, password) => this.props.store.dispatch({type: 'LOGIN', data: {'username': username, 'password': password}})}
         onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_LOGIN", data: {"username": event.target.value}})}
         onChangePassword={(event) => this.props.store.dispatch({type: "CHANGE_PASSWORD_LOGIN", data: {"password": event.target.value}})}
+        setLogin={(username) => this.props.store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
         resetLogin={() => this.props.store.dispatch({type: "RESET_LOGIN", data: {"message": ""}})}
       />
       )

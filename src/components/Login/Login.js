@@ -9,15 +9,13 @@ class Login extends Component {
 
   alertStyle = "";
   loginButtonStyle = "";
-  constructor(props){
-    super(props);
-    this.props.resetLogin();
-    this.state = {buttonHover: false};
+
+  componentWillMount(){
+    this.state = {buttonHover: false};    
   }
 
   render() {
-    const { status, onLogin, logged_in } = this.props
-    if(status !== ""){
+    if(this.props.status !== ""){
       this.alertStyle = styles.alert_display
     } else {
       this.alertStyle = styles.alert_hide
@@ -29,9 +27,10 @@ class Login extends Component {
       this.loginButtonStyle = styles.login_button_style
     }
 
-    if(logged_in){
-      return <Redirect push to="/dashboard" />;      
+    if(this.props.logged_in === true){
+      return (<Redirect push to="/dashboard" />)     
     } else {
+      console.log("Here");
       return (
         <div>
           <ul style={styles.nav_bar_style}>
@@ -44,11 +43,11 @@ class Login extends Component {
             <br/>
             <input type="text" value={this.props.password} placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={styles.text_input_style}/>
             <br/>
-            <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.loginButtonStyle} onClick={() => {onLogin(this.props.username, this.props.password)}} bsSize="large" block>Login</Button>
+            <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.loginButtonStyle} onClick={() => {this.props.onLogin(this.props.username, this.props.password)}} bsSize="large" block>Login</Button>
           </form>
           <div style={styles.alert_div}>
             <Alert bsStyle={"danger"} style={this.alertStyle}>
-              <strong>{status}</strong>
+              <strong>{this.props.status}</strong>
             </Alert>
           </div>
         </div>

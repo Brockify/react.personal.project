@@ -31,9 +31,11 @@ const LoginComponent = (props) => {
       username={store.getState().login.username}
       password={store.getState().login.password}
       logged_in={store.getState().login.logged_in}
+      store={store}
       onLogin={(username, password) => store.dispatch({type: 'LOGIN', data: {'username': username, 'password': password}})}
       onChangeUsername={(event) => store.dispatch({type: "CHANGE_USERNAME_LOGIN", data: {"username": event.target.value}})}
       onChangePassword={(event) => store.dispatch({type: "CHANGE_PASSWORD_LOGIN", data: {"password": event.target.value}})}
+      setLogin={(username) => store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
       resetLogin={() => store.dispatch({type: "RESET_LOGIN", data: {"message": ""}})}
     />
   );
@@ -45,6 +47,7 @@ const DashboardComponenet = (props) => {
     <Dashboard
       logout={() => store.dispatch({type: "LOGOUT"})}
       logged_in={store.getState().login.logged_in}
+      setLogin={(username) => store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
       store={store}
       value={"Dashboard"}
     />
@@ -58,6 +61,7 @@ const RegisterComponent = (props) => {
       status={store.getState().register.message}
       username={store.getState().register.username}
       password={store.getState().register.password}
+      logged_in={store.getState().login.logged_in}
       onRegister={(username, password) => store.dispatch({type: 'REGISTER', data: {'username': username, 'password': password}})}
       onChangeUsername={(event) => store.dispatch({type: "CHANGE_USERNAME_REGISTER", data: {"username": event.target.value}})}
       onChangePassword={(event) => store.dispatch({type: "CHANGE_PASSWORD_REGISTER", data: {"password": event.target.value}})}
@@ -66,7 +70,8 @@ const RegisterComponent = (props) => {
   );
 }
 
-const render = () => ReactDOM.render(
+const render = () => 
+  ReactDOM.render(
   <Router>
     <div>
       <Route exact path="/" component={LoginComponent}/>
@@ -79,11 +84,14 @@ const render = () => ReactDOM.render(
       </div>
     </div>
   </Router>,
-  rootEl
-)
+  rootEl)
 
 render()
 store.subscribe(render)
 sagaMiddleware.run(loginSaga)
 sagaMiddleware.run(registerSaga)
 sagaMiddleware.run(changePasswordSaga)
+const cachedUser = localStorage.getItem("user");
+if (JSON.parse(cachedUser) != null) {
+  store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser).username}})
+}

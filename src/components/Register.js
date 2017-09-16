@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {Alert, Button} from 'react-bootstrap'
+import { Redirect } from 'react-router';
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -36,33 +38,37 @@ class Register extends Component {
       this.registerButtonStyle = register_button_style
     }
 
-    return (
-      <div>
-        <ul style={nav_bar_style}>
-          <li style={nav_item_style}><Link style={link_style} to="/">Login</Link></li>
-          <li style={nav_item_style}><Link style={link_style} to="/register">Register</Link></li>
-        </ul>
-        <form style={formStyle}>
-            <h1 style={{"height": "20%"}}>Register</h1>
-            <input value={this.props.username} type="text" onChange={this.props.onChangeUsername.bind(this)} placeholder="Username" style={textInputStyle}/>
-            <br/>
-            <input value={this.props.password} type="text" placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={textInputStyle}/>
-            <br/>
-            <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.registerButtonStyle} onClick={() => {onRegister(this.props.username, this.props.password)}} bsSize="large" block>Register</Button>
-            <br/>
-        </form>
-        <div style={{"textAlign": "center", "height": "20%", "marginTop": "5%", "paddingBottom": "60px"}}>
-          <Alert bsStyle={"danger"} style={this.alertStyle}>
-            <strong>{status}</strong>
-          </Alert>
+    if(this.props.logged_in){
+      return (<Redirect push to="/dashboard"/>)
+    } else {
+      return (
+        <div>
+          <ul style={nav_bar_style}>
+            <li style={nav_item_style}><Link style={link_style} to="/">Login</Link></li>
+            <li style={nav_item_style}><Link style={link_style} to="/register">Register</Link></li>
+          </ul>
+          <form style={formStyle}>
+              <h1 style={{"height": "20%"}}>Register</h1>
+              <input value={this.props.username} type="text" onChange={this.props.onChangeUsername.bind(this)} placeholder="Username" style={textInputStyle}/>
+              <br/>
+              <input value={this.props.password} type="text" placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={textInputStyle}/>
+              <br/>
+              <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.registerButtonStyle} onClick={() => {onRegister(this.props.username, this.props.password)}} bsSize="large" block>Register</Button>
+              <br/>
+          </form>
+          <div style={{"textAlign": "center", "height": "20%", "marginTop": "5%", "paddingBottom": "60px"}}>
+            <Alert bsStyle={"danger"} style={this.alertStyle}>
+              <strong>{status}</strong>
+            </Alert>
+          </div>
+          <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
+            <p>
+              Hello
+            </p>
+          </div>
         </div>
-        <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
-          <p>
-            Hello
-          </p>
-        </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
