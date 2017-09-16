@@ -29,7 +29,7 @@ function getChangePassword(username, oldPassword, newPassword, newConfirmPasswor
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Content-Type", "application/json");
     var myInit = { method: 'GET', headers: myHeaders, cache: 'default' };
-    var myRequest = new Request('http://198.199.102.156:5000/ResetPassword/' + username + '/' + oldPassword + '/' + newPassword, myInit);
+    var myRequest = new Request('http://198.199.102.156:5000/ChangePassword/' + username + '/' + oldPassword + '/' + newPassword, myInit);
     const response = fetch(myRequest).then((response) => {
       //check to make sure the response was successful
       if(response.status !== 200){

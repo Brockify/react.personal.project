@@ -4,11 +4,13 @@ import {Link} from 'react-router-dom'
 import ChangePassword from './ChangePassword/ChangePassword'
 import { Redirect } from 'react-router';
 import Login from './Login/Login'
+import ResetPassword from './ResetPassword/ResetPassword'
 
 class Dashboard extends Component {
 
   constructor(props){
     super(props);
+    console.log("Dashboard Component")
   }
 
   render() {
@@ -30,18 +32,28 @@ class Dashboard extends Component {
         <div style={{"textAlign": "center"}}>
           <h1>{this.props.value}</h1>
         </div>
-        <ChangePassword
-          onResetPassword={(username, oldPassword, newPassword, newConfirmPassword) => this.props.store.dispatch({type: "CHANGE_PASSWORD", data: {"username": username, "oldPassword": oldPassword, "newPassword": newPassword, "newConfirmPassword": newConfirmPassword}})}
-          onChangeOldPassword={(event) => this.props.store.dispatch({type: "CHANGE_OLD_CHANGE", data: {"oldPassword": event.target.value}})}
-          resetMessage={(event) => this.props.store.dispatch({type: "RESET_MESSAGE_CHANGE"})}
-          onChangeNewPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CHANGE", data: {"newPassword": event.target.value}})}
-          onChangeNewConfirmPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CONFIRM_CHANGE", data: {"newConfirmPassword": event.target.value}})}
-          oldPassword={this.props.store.getState().change_password.oldPassword}
-          newPassword={this.props.store.getState().change_password.newPassword}
-          newConfirmPassword={this.props.store.getState().change_password.newConfirmPassword}
-          status={this.props.store.getState().change_password.message}
-          username={this.props.store.getState().login.username}
-        />
+        <div>
+          <ChangePassword
+            onResetPassword={(username, oldPassword, newPassword, newConfirmPassword) => this.props.store.dispatch({type: "CHANGE_PASSWORD", data: {"username": username, "oldPassword": oldPassword, "newPassword": newPassword, "newConfirmPassword": newConfirmPassword}})}
+            onChangeOldPassword={(event) => this.props.store.dispatch({type: "CHANGE_OLD_CHANGE", data: {"oldPassword": event.target.value}})}
+            resetMessage={(event) => this.props.store.dispatch({type: "RESET_MESSAGE_CHANGE"})}
+            onChangeNewPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CHANGE", data: {"newPassword": event.target.value}})}
+            onChangeNewConfirmPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CONFIRM_CHANGE", data: {"newConfirmPassword": event.target.value}})}
+            oldPassword={this.props.store.getState().change_password.oldPassword}
+            newPassword={this.props.store.getState().change_password.newPassword}
+            newConfirmPassword={this.props.store.getState().change_password.newConfirmPassword}
+            status={this.props.store.getState().change_password.message}
+            username={this.props.store.getState().login.username}
+          />
+        </div>
+        <div style={{"marginTop": "10px", "paddingBottom": "60px"}}>
+          <ResetPassword
+          status={this.props.store.getState().reset_password.message}
+          username={this.props.store.getState().reset_password.username}
+          onResetPassword={(username) => this.props.store.dispatch({type: "RESET_PASSWORD", data: {"username": username}})}
+          onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_RESET", data: {"username": event.target.value}})}
+          />
+        </div>
       </div>
     );
   }

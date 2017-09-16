@@ -12,6 +12,7 @@ class Login extends Component {
 
   componentWillMount(){
     this.state = {buttonHover: false};    
+    console.log("Login Component");
   }
 
   render() {
@@ -30,7 +31,6 @@ class Login extends Component {
     if(this.props.logged_in === true){
       return (<Redirect push to="/dashboard" />)     
     } else {
-      console.log("Here");
       return (
         <div>
           <ul style={styles.nav_bar_style}>

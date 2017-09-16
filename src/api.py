@@ -3,6 +3,7 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 from flask import jsonify
 from flaskext.mysql import MySQL
+from random import randint
 
 app = Flask(__name__)
 CORS(app)
@@ -47,8 +48,8 @@ class HelloWorld(Resource):
             mysql.get_db().commit()
             return jsonify({"message": "Register successful!"})
 
-    @app.route('/ResetPassword/<string:username>/<string:oldPassword>/<string:newPassword>', methods=['POST', 'GET'])
-    def ResetPassword(username, oldPassword, newPassword):
+    @app.route('/ChangePassword/<string:username>/<string:oldPassword>/<string:newPassword>', methods=['POST', 'GET'])
+    def ChangePassword(username, oldPassword, newPassword):
         cur = mysql.get_db().cursor()
         cur.execute('''SELECT Password FROM Users where Username=%s''', (username))
         rv = cur.fetchone()
@@ -61,6 +62,20 @@ class HelloWorld(Resource):
             cur.execute('''UPDATE Users SET Password=%s where Username=%s''', (newPassword, username))
             mysql.get_db().commit()
             return jsonify({"message": "Password changed!"})
+
+    @app.route('/ResetPassword/<string:username>', methods=['POST', 'GET'])
+    def ResetPassword(username):
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT Username FROM Users where Username=%s''', (username))
+        rv = cur.fetchone()
+        if(rv == None):
+            return jsonify({"message": "No account with that username."})
+        else:
+            #insert new user
+            newPassword = (str(randint(0, 9)) + str(randint(0, 9)) + str(randint(0, 9)) + str(randint(0, 9)))
+            cur.execute('''UPDATE Users SET Password=%s where Username=%s''', (newPassword, username))
+            mysql.get_db().commit()
+            return jsonify({"message": "Password reset! Check your email."})
 
 api.add_resource(HelloWorld, '/')
 

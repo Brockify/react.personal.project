@@ -18,6 +18,7 @@ import reducer from './reducers/index'
 import loginSaga from './sagas/LoginSaga'
 import registerSaga from './sagas/RegisterSaga'
 import changePasswordSaga from './sagas/ChangePasswordSaga'
+import resetPasswordSaga from './sagas/ResetPasswordSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
@@ -79,7 +80,7 @@ const render = () =>
       <Route path="/dashboard" component={DashboardComponenet}/>
       <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
         <p>
-          Login Footer
+          Brock's Personal Project
         </p>
       </div>
     </div>
@@ -91,6 +92,7 @@ store.subscribe(render)
 sagaMiddleware.run(loginSaga)
 sagaMiddleware.run(registerSaga)
 sagaMiddleware.run(changePasswordSaga)
+sagaMiddleware.run(resetPasswordSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
   store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser).username}})

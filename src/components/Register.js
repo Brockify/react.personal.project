@@ -61,11 +61,6 @@ class Register extends Component {
               <strong>{status}</strong>
             </Alert>
           </div>
-          <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
-            <p>
-              Hello
-            </p>
-          </div>
         </div>
       )
     }

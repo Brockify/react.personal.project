@@ -12,6 +12,7 @@ class ChangePassword extends Component {
         super(props);
         this.state = {buttonHover: false}
         this.props.resetMessage();
+        console.log("ChangePassword Components")
     }
 
     render() {
