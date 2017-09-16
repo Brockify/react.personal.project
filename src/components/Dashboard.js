@@ -19,19 +19,7 @@ class Dashboard extends Component {
 
     //if the user isn't logged in yet display Login page
     if(!this.props.logged_in){
-      return (
-        <Login
-        status={this.props.store.getState().login.message}
-        username={this.props.store.getState().login.username}
-        password={this.props.store.getState().login.password}
-        logged_in={this.props.store.getState().login.logged_in}
-        onLogin={(username, password) => this.props.store.dispatch({type: 'LOGIN', data: {'username': username, 'password': password}})}
-        onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_LOGIN", data: {"username": event.target.value}})}
-        onChangePassword={(event) => this.props.store.dispatch({type: "CHANGE_PASSWORD_LOGIN", data: {"password": event.target.value}})}
-        setLogin={(username) => this.props.store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
-        resetLogin={() => this.props.store.dispatch({type: "RESET_LOGIN", data: {"message": ""}})}
-      />
-      )
+      return (<Redirect push to="/"/>)
     }
     return (
       <div>
