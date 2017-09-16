@@ -17,9 +17,13 @@ class ChangePassword extends Component {
 
     render() {
         if(this.props.status !== ""){
-         this.alertStyle = styles.alert_display
+            if(this.props.status == "Password changed!"){
+                this.alertStyle = {'style': styles.alert_display, 'style-type': 'success'}
+            } else {
+                this.alertStyle = {'style': styles.alert_display, 'style-type': 'danger'}
+            }
         } else {
-         this.alertStyle = styles.alert_hide
+            this.alertStyle = {'style': styles.alert_hide, 'style-type': 'danger'}
         }
 
         if(this.state.buttonHover){
@@ -41,7 +45,7 @@ class ChangePassword extends Component {
                 <br/>
                 <Button onClick={() => this.props.onResetPassword(this.props.username, this.props.oldPassword, this.props.newPassword, this.props.newConfirmPassword)} onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.resetButtonStyle}  bsSize="large" block>Submit</Button>
                 <div style={styles.alert_div}>
-                    <Alert bsStyle={"danger"} style={this.alertStyle}>
+                    <Alert bsStyle={this.alertStyle["style-type"]} style={this.alertStyle.style}>
                         <strong>{this.props.status}</strong>
                     </Alert>
                 </div>
