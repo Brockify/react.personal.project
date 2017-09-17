@@ -19,6 +19,7 @@ import loginSaga from './sagas/LoginSaga'
 import registerSaga from './sagas/RegisterSaga'
 import changePasswordSaga from './sagas/ChangePasswordSaga'
 import resetPasswordSaga from './sagas/ResetPasswordSaga'
+import resetUsernameSaga from './sagas/ResetUsernameSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
@@ -62,10 +63,12 @@ const RegisterComponent = (props) => {
       status={store.getState().register.message}
       username={store.getState().register.username}
       password={store.getState().register.password}
+      email={store.getState().register.email}
       logged_in={store.getState().login.logged_in}
-      onRegister={(username, password) => store.dispatch({type: 'REGISTER', data: {'username': username, 'password': password}})}
+      onRegister={(username, password, email) => store.dispatch({type: 'REGISTER', data: {'username': username, 'password': password, "email": email}})}
       onChangeUsername={(event) => store.dispatch({type: "CHANGE_USERNAME_REGISTER", data: {"username": event.target.value}})}
       onChangePassword={(event) => store.dispatch({type: "CHANGE_PASSWORD_REGISTER", data: {"password": event.target.value}})}
+      onChangeEmail={(event) => store.dispatch({type: "CHANGE_EMAIL_REGISTER", data: {"email": event.target.value}})}
       resetMessage={() => store.dispatch({type: "RESET_MESSAGE_REGISTER", data: {"message": ""}})}
     />
   );
@@ -93,6 +96,7 @@ sagaMiddleware.run(loginSaga)
 sagaMiddleware.run(registerSaga)
 sagaMiddleware.run(changePasswordSaga)
 sagaMiddleware.run(resetPasswordSaga)
+sagaMiddleware.run(resetUsernameSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
   store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser).username}})

@@ -3,7 +3,7 @@ import { put, takeLatest } from 'redux-saga/effects'
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* register(action) {
    try {
-      var response = yield(getRegister(action.data.username, action.data.password));
+      var response = yield(getRegister(action.data.username, action.data.password, action.data.email));
       if(response.message !== null && response.message !== "Register successful!"){
         yield put({type: "REGISTER_FAIL", data: {'message': response.message}});        
       } else {
@@ -15,7 +15,7 @@ function* register(action) {
    }
 }
 
-function getRegister(username, password){
+function getRegister(username, password, email){
   if(username === ""){
     return {'message': 'Please enter a valid username.'}                          
   } else if(password === ""){
@@ -27,7 +27,7 @@ function getRegister(username, password){
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Content-Type", "application/json");
     var myInit = { method: 'GET', headers: myHeaders, cache: 'default' };
-    var myRequest = new Request('http://198.199.102.156:5000/Register/' + username + '/' + password, myInit);
+    var myRequest = new Request('http://198.199.102.156:5000/Register/' + username + '/' + password + '/' + email, myInit);
     const response = fetch(myRequest).then((response) => {
       //check to make sure the response was successful
       if(response.status !== 200){

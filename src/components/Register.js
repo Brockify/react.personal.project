@@ -13,8 +13,8 @@ class Register extends Component {
   render() {
     const { status, onRegister } = this.props
 
-    const textInputStyle = {"borderRadius": "6px", "border": "1px solid grey", "width": "100%", "marginTop": "5px", "textAlign": "center", "height": "20%", "fontSize": "12pt"};
-    const formStyle = {"textAlign": "center", "margin": "0 auto", "width": "70%", "height": "300px", "border": "2px solid grey", "paddingLeft": "50px", "paddingRight": "50px", "borderRadius": "6px"}
+    const textInputStyle = {"borderRadius": "6px", "border": "1px solid grey", "width": "100%", "marginTop": "5px", "textAlign": "center", "height": "15%", "fontSize": "12pt"};
+    const formStyle = {"textAlign": "center", "margin": "0 auto", "width": "70%", "height": "350px", "border": "2px solid grey", "paddingLeft": "50px", "paddingRight": "50px", "borderRadius": "6px"}
     //styles for navbar
     const link_style = {"color": "#fff", "textDecoration": "none"}
     const nav_item_style = {"height": "50px", "display": "inline", "marginLeft": "5%", "lineHeight": "50px"}
@@ -23,8 +23,8 @@ class Register extends Component {
     const alert_hide = {"display": "none"}
 
     //style for button
-    const register_button_style = {"marginTop": "5px", "height": "20%", "backgroundColor": "white", "color": "black"}
-    const register_button_style_hover = {"marginTop": "5px", "height": "20%", "backgroundColor": "green", "color": "white"}
+    const register_button_style = {"marginTop": "5px", "height": "15%", "backgroundColor": "white", "color": "black"}
+    const register_button_style_hover = {"marginTop": "5px", "height": "15%", "backgroundColor": "green", "color": "white"}
        //decide whether alert should be hidden or displayed
     if(status !== ""){
       this.alertStyle = alert_display
@@ -53,7 +53,9 @@ class Register extends Component {
               <br/>
               <input value={this.props.password} type="text" placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={textInputStyle}/>
               <br/>
-              <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.registerButtonStyle} onClick={() => {onRegister(this.props.username, this.props.password)}} bsSize="large" block>Register</Button>
+              <input value={this.props.email} type="text" onChange={this.props.onChangeEmail.bind(this)} placeholder="Email" style={textInputStyle}/>
+              <br/>
+              <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.registerButtonStyle} onClick={() => {onRegister(this.props.username, this.props.password, this.props.email)}} bsSize="large" block>Register</Button>
               <br/>
           </form>
           <div style={{"textAlign": "center", "height": "20%", "marginTop": "5%", "paddingBottom": "60px"}}>

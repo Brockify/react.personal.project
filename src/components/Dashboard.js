@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import ChangePassword from './ChangePassword/ChangePassword'
 import { Redirect } from 'react-router';
 import Login from './Login/Login'
+import ResetUsername from './ResetUsername/ResetUsername'
 import ResetPassword from './ResetPassword/ResetPassword'
 
 class Dashboard extends Component {
@@ -46,13 +47,23 @@ class Dashboard extends Component {
             username={this.props.store.getState().login.username}
           />
         </div>
-        <div style={{"marginTop": "10px", "paddingBottom": "60px"}}>
+        <div style={{"marginTop": "10px"}}>
           <ResetPassword
           status={this.props.store.getState().reset_password.message}
           username={this.props.store.getState().reset_password.username}
           onResetPassword={(username) => this.props.store.dispatch({type: "RESET_PASSWORD", data: {"username": username}})}
           onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_RESET", data: {"username": event.target.value}})}
+          resetMessage={() => this.props.store.dispatch({type: "RESET_PASSWORD_RESET"})}
           />
+        </div>
+        <div style={{"marginTop": "10px", "paddingBottom": "60px"}}>
+          <ResetUsername
+            status={this.props.store.getState().reset_username.message}
+            email={this.props.store.getState().reset_username.email}
+            onChangeEmail={(event) => this.props.store.dispatch({type: "CHANGE_EMAIL_RESET_USERNAME", data: {"email": event.target.value}})}
+            onResetUsername={(email) => this.props.store.dispatch({type: "RESET_USERNAME", data: {"email": email}})}
+            resetMessage={() => this.props.store.dispatch({type: "RESET_USERNAME_RESET_MESSAGE"})}
+           />
         </div>
       </div>
     );

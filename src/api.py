@@ -4,7 +4,8 @@ from flask_cors import CORS
 from flask import jsonify
 from flaskext.mysql import MySQL
 from random import randint
-
+from email.mime.text import MIMEText
+import smtplib
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
@@ -35,8 +36,8 @@ class HelloWorld(Resource):
         else:
             return jsonify({"message": "Username not found. Please try again."})
 
-    @app.route('/Register/<string:username>/<string:password>', methods=['POST', 'GET'])
-    def Register(username, password):
+    @app.route('/Register/<string:username>/<string:password>/<string:email>', methods=['POST', 'GET'])
+    def Register(username, password, email):
         cur = mysql.get_db().cursor()
         cur.execute('''SELECT Username FROM Users where Username=%s''', (username))
         rv = cur.fetchone()
@@ -44,7 +45,7 @@ class HelloWorld(Resource):
             return jsonify({"message": "Username already taken. Please try again."})
         else:
             #insert new user
-            cur.execute("INSERT INTO Users(username, password) VALUES(%s, %s)", (username, password))
+            cur.execute("INSERT INTO Users(username, password, email) VALUES(%s, %s, %s)", (username, password, email))
             mysql.get_db().commit()
             return jsonify({"message": "Register successful!"})
 
@@ -66,16 +67,61 @@ class HelloWorld(Resource):
     @app.route('/ResetPassword/<string:username>', methods=['POST', 'GET'])
     def ResetPassword(username):
         cur = mysql.get_db().cursor()
-        cur.execute('''SELECT Username FROM Users where Username=%s''', (username))
+        cur.execute('''SELECT Email FROM Users where Username=%s''', (username))
         rv = cur.fetchone()
         if(rv == None):
             return jsonify({"message": "No account with that username."})
         else:
             #insert new user
-            newPassword = (str(randint(0, 9)) + str(randint(0, 9)) + str(randint(0, 9)) + str(randint(0, 9)))
-            cur.execute('''UPDATE Users SET Password=%s where Username=%s''', (newPassword, username))
-            mysql.get_db().commit()
-            return jsonify({"message": "Password reset! Check your email."})
+            try:
+                newPassword = (str(randint(0, 9)) + str(randint(0, 9)) + str(randint(0, 9)) + str(randint(0, 9)))
+                cur.execute('''UPDATE Users SET Password=%s where Username=%s''', (newPassword, username))
+                mysql.get_db().commit()
+                msg = MIMEText(("Your new password is " + newPassword))
+                # me == the sender's email address
+                # you == the recipient's email address
+                msg['Subject'] = 'Changed password'
+                msg['From'] = 'bdamico33@gmail.com'
+                msg['To'] = rv[0]
+
+                # Send the message via our own SMTP server, but don't include the
+                # envelope header.
+                s = smtplib.SMTP("smtp.gmail.com", 587)
+                s.starttls()
+                s.login("bdamico33@gmail.com", "heroforsake")
+                s.sendmail('bdamico33@gmail.com', [rv[0]], msg.as_string())
+                s.close()
+                return jsonify({"message": "Password reset! Check your email."})
+            except Exception as e:
+                return jsonify({"message": jsonify(e)})
+
+    @app.route('/ResetUsername/<string:email>', methods=['POST', 'GET'])
+    def ResetUsername(email):
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT Username FROM Users where Email=%s''', (email))
+        rv = cur.fetchone()
+        if(rv == None):
+            return jsonify({"message": "No account with that email."})
+        else:
+            #insert new user
+            try:
+                msg = MIMEText(("Your Username is " + rv[0]))
+                # me == the sender's email address
+                # you == the recipient's email address
+                msg['Subject'] = 'Your app username - Brocks Project'
+                msg['From'] = 'bdamico33@gmail.com'
+                msg['To'] = email
+
+                # Send the message via our own SMTP server, but don't include the
+                # envelope header.
+                s = smtplib.SMTP("smtp.gmail.com", 587)
+                s.starttls()
+                s.login("bdamico33@gmail.com", "heroforsake")
+                s.sendmail('bdamico33@gmail.com', [email], msg.as_string())
+                s.close()
+                return jsonify({"message": "Username sent to your email."})
+            except Exception as e:
+                return jsonify({"message": jsonify(e)})
 
 api.add_resource(HelloWorld, '/')
 

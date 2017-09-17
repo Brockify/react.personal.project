@@ -13,6 +13,9 @@ export default (state = initialState, action) => {
 
     case 'CHANGE_USERNAME_RESET':
         return state.merge({"username": action.data.username})    
+        
+    case 'RESET_PASSWORD_RESET':
+        return state.merge({"message": ""})
     default:
       return state
   }
