@@ -26,11 +26,11 @@ class HelloWorld(Resource):
     @app.route('/Login/<string:username>/<string:password>', methods=['GET'])
     def Login(username, password):
         cur = mysql.get_db().cursor()
-        cur.execute('''SELECT Password FROM Users where Username=%s''', (username))
+        cur.execute('''SELECT Password, Points FROM Users where Username=%s''', (username))
         rv = cur.fetchone()
         if(rv != None):
             if(rv[0] == password):
-                return jsonify({"message": "Login success!"})
+                return jsonify({"message": "Login success!", "points": rv[1]})
             else:
                 return jsonify({"message": "Password is wrong. Please try again."})
         else:
@@ -123,6 +123,19 @@ class HelloWorld(Resource):
             except Exception as e:
                 return jsonify({"message": jsonify(e)})
 
+    @app.route('/UploadPoints/<string:username>/<int:points>', methods=['POST', 'GET'])
+    def UploadPoints(username, points):
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT Points FROM Users where Username=%s''', (username))
+        rv = cur.fetchone()
+        if(str(points) == str(0)):
+            cur.execute('''UPDATE Users SET Points=%s where Username=%s''', ((rv[0] - 25), username))
+            mysql.get_db().commit()
+            return jsonify({"message": "You unfortunately lost. Try again!", "points": (rv[0] - 25)})
+        else:
+            cur.execute('''UPDATE Users SET Points=%s where Username=%s''', ((rv[0] + (points - 25)), username))
+            mysql.get_db().commit()
+            return jsonify({"message": "You won!", "points": (rv[0] + (points - 25))})
 api.add_resource(HelloWorld, '/')
 
 if __name__ == '__main__':

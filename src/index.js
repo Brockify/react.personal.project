@@ -20,7 +20,7 @@ import registerSaga from './sagas/RegisterSaga'
 import changePasswordSaga from './sagas/ChangePasswordSaga'
 import resetPasswordSaga from './sagas/ResetPasswordSaga'
 import resetUsernameSaga from './sagas/ResetUsernameSaga'
-
+import slotMachineSaga from './sagas/SlotMachineSaga'
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
 const rootEl = document.getElementById('root')
@@ -97,7 +97,8 @@ sagaMiddleware.run(registerSaga)
 sagaMiddleware.run(changePasswordSaga)
 sagaMiddleware.run(resetPasswordSaga)
 sagaMiddleware.run(resetUsernameSaga)
+sagaMiddleware.run(slotMachineSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
-  store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser).username}})
+  store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser)}})
 }

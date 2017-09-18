@@ -1,10 +1,10 @@
 import Immutable from 'seamless-immutable';
-const initialState = Immutable({'value': 0, "message": "", "username": "", "password": "", "logged_in": false, "buttonHover": false});
+const initialState = Immutable({'points': 0, "message": "", "username": "", "password": "", "logged_in": false, "buttonHover": false});
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESSFUL':
-      localStorage.setItem("user", JSON.stringify({"username": state.username, "password": state.password}));    
-      return state.merge({"message": action.data.message, "password": "", "logged_in": true})
+      localStorage.setItem("user", JSON.stringify({"username": state.username, "password": state.password, "points": action.data.points}));    
+      return state.merge({"message": action.data.message, "password": "", "logged_in": true, "points": action.data.points})
     case 'LOGIN_FAIL':
     return state.merge({"message": action.data.message, "logged_in": false})
     case 'LOGIN':
@@ -16,7 +16,23 @@ export default (state = initialState, action) => {
     case 'RESET_LOGIN': 
       return state.merge({"message": action.data.message});
     case 'SET_LOGIN':
-      return state.merge({"username": action.data.username, "logged_in": true})
+      return state.merge({"username": action.data.username.username, "logged_in": true, "points": action.data.username.points})
+    case 'UPLOAD_POINTS_SUCCESS':
+      var cachedUser = JSON.parse(localStorage.getItem("user"));
+      cachedUser.points = action.data.points;
+      console.log(cachedUser);
+      localStorage.setItem("user", JSON.stringify(cachedUser));
+      return state.merge({"message": action.data.message, "points": action.data.points})
+    case 'UPLOAD_POINTS_FAIL':
+        if(action.data.points != null){
+          var cachedUser = JSON.parse(localStorage.getItem("user"));
+          cachedUser.points = action.data.points;
+          console.log(cachedUser);
+          localStorage.setItem("user", JSON.stringify(cachedUser));
+          return state.merge({"points": action.data.points})            
+        } else {
+            return state.merge({"message": "Unavailable. Please try again."})
+        }
     case 'LOGOUT': 
       localStorage.setItem("user", null);        
       return state.merge({"logged_in": false, "message": "", "username": ""});
