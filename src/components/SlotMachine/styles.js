@@ -1,7 +1,7 @@
 let styles = { 
     slot_column: {
-        "height": "80px",
-        "width": "100px",
+        "height": "90px",
+        "width": "120px",
         "textAlign": "center",
         "lineHeight": "80px",
         "color": "white",
@@ -18,15 +18,44 @@ let styles = {
     },
     alert_hide: {
         "display": "none"
-    }, formStyle: {
+    }, 
+    formStyle: {
         "textAlign": "center",
         "margin": "0 auto",
-        "width": "70%",
-        "height": "500px", 
+        "width": "90%",
+        "height": "540px", 
         "border": "2px solid grey", 
         "paddingLeft": "50px", 
         "paddingRight": "50px", 
         "borderRadius": "6px",
+    }, 
+    reset_button_style: {
+        "marginTop": "5px", 
+        "height": "40px", 
+        "width": "50%",
+        "backgroundColor": "white", 
+        "color": "black"
+    }, 
+    reset_button_style_hover: {
+        "marginTop": "5px", 
+        "height": "40px", 
+        "width": "50%",
+        "backgroundColor": "green", 
+        "color": "white"
+    }, 
+    auto_button_style: {
+        "marginTop": "5px", 
+        "height": "40px", 
+        "width": "50%",
+        "backgroundColor": "white", 
+        "color": "black"
+    }, 
+    auto_button_style_hover: {
+        "marginTop": "5px", 
+        "height": "40px", 
+        "width": "50%",
+        "backgroundColor": "green", 
+        "color": "white"
     }
   }
 export default styles;

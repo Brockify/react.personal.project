@@ -3,14 +3,15 @@ import { put, takeLatest } from 'redux-saga/effects'
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* runSlot(action) {
     const {a, b, c, d, e, f, g, h, i, points, username} = action.data
-    var winning_amount = getWinner(a, b, c, d, e, f, g, h, i)
-    console.log(winning_amount);
-   try {
+    var winning_dict = getWinner(a, b, c, d, e, f, g, h, i)
+    var winning_amount = winning_dict.winning_amount
+    console.log(winning_dict.winners);
+    try {
       var response = yield(uploadPoints(a, b, c, d, e, f, g, h, i, username, winning_amount));
       if(response.message !== null && response.message !== "You won!"){
         yield put({type: "UPLOAD_POINTS_FAIL", data: {'message': response.message, "points": response.points}});                      
     } else {
-        yield put({type: "UPLOAD_POINTS_SUCCESS", data: {'message': response.message + " - +" + winning_amount + " credits", "points": response.points}});                
+        yield put({type: "UPLOAD_POINTS_SUCCESS", data: {"winners": winning_dict.winners, 'message': response.message + " - +" + winning_amount + " credits", "points": response.points}});                
       }
    } catch (e) {
       //called if the endpoint is not valid or cannot be hit
@@ -42,7 +43,31 @@ function getWinner(a, b, c, d, e, f, g, h, i){
     var top_line = getTopLine(a, b, c)
     var middle_line = getMiddleLine(d, e, f);    
     var bottom_line = getBottomLine(g, h, i)
-    return middle_line + top_line + bottom_line;
+    var top_diagnol_line = getTopDiagnol(a,e,i)
+    var bottom_diagnol_line = getBottomDiagnol(g, e, c)
+    var final_dict = {"winning_amount": (middle_line + top_line + bottom_line + top_diagnol_line + bottom_diagnol_line), "winners": {"topDiagnol": false, "top": false, "middle": false, "bottom": false, "bottomDiagnol": false}}
+    // console.log(top_line)
+    // console.log(bottom_diagnol_line)
+    // console.log(top_diagnol_line)
+    // console.log(bottom_line)
+    // console.log(middle_line)
+    
+    if(top_line > 0){
+        final_dict.winners.top = true;
+    }
+    if(middle_line > 0){
+        final_dict.winners.middle = true;
+    }
+    if(bottom_line > 0){
+        final_dict.winners.bottom = true;
+    }
+    if(top_diagnol_line > 0){
+        final_dict.winners.top_diagnol_line = true;
+    }
+    if(bottom_diagnol_line > 0){
+        final_dict.winners.bottom_diagnol_line = true;
+    }
+    return final_dict;
 }
 
 function getMiddleLine(a, b, c){
@@ -50,6 +75,30 @@ function getMiddleLine(a, b, c){
     var points_earned = 0;
     for(var i = 0; i < winning_combos.length; i++){
         if((parseInt(winning_combos[i].combo.charAt(0)) == a|| a == 3) && (parseInt(winning_combos[i].combo.charAt(1)) == b || b == 3) && (parseInt(winning_combos[i].combo.charAt(2)) == c || c == 3)){
+            console.log("Winning combo: " + winning_combos[i].combo)                        
+            points_earned = winning_combos[i].points
+        }
+    }
+    return points_earned;
+}
+
+function getTopDiagnol(a, e, i){
+    var found = false;
+    var points_earned = 0;
+    for(var i = 0; i < winning_combos.length; i++){
+        if((parseInt(winning_combos[i].combo.charAt(0)) == a|| a == 3) && (parseInt(winning_combos[i].combo.charAt(1)) == e || e == 3) && (parseInt(winning_combos[i].combo.charAt(2)) == i || i == 3)){
+            console.log("Winning combo: " + winning_combos[i].combo)                        
+            points_earned = winning_combos[i].points
+        }
+    }
+    return points_earned;
+}
+
+function getBottomDiagnol(g, e, c){
+    var found = false;
+    var points_earned = 0;
+    for(var i = 0; i < winning_combos.length; i++){
+        if((parseInt(winning_combos[i].combo.charAt(0)) == g|| g == 3) && (parseInt(winning_combos[i].combo.charAt(1)) == e || e == 3) && (parseInt(winning_combos[i].combo.charAt(2)) == c || c == 3)){
             console.log("Winning combo: " + winning_combos[i].combo)                        
             points_earned = winning_combos[i].points
         }
@@ -72,10 +121,11 @@ function getTopLine(d, e, f){
 function getBottomLine(g, h, i){
     var found = false;
     var points_earned = 0;
-    for(var i = 0; i < winning_combos.length; i++){
-        if((parseInt(winning_combos[i].combo.charAt(0)) == g || g == 3) && (parseInt(winning_combos[i].combo.charAt(1)) == h || h == 3) && (parseInt(winning_combos[i].combo.charAt(2)) == i || i == 3)){
-            console.log("Winning combo: " + winning_combos[i].combo)
-            points_earned = winning_combos[i].points
+    console.log()
+    for(var j = 0; j < winning_combos.length; j++){
+        if((parseInt(winning_combos[j].combo.charAt(0)) == g|| g == 3) && (parseInt(winning_combos[j].combo.charAt(1)) == h || h == 3) && (parseInt(winning_combos[j].combo.charAt(2)) == i || i == 3)){
+            console.log("Winning combo: " + winning_combos[j].combo)                        
+            points_earned = winning_combos[j].points
         }
     }
     return points_earned;

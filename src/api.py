@@ -45,7 +45,7 @@ class HelloWorld(Resource):
             return jsonify({"message": "Username already taken. Please try again."})
         else:
             #insert new user
-            cur.execute("INSERT INTO Users(username, password, email) VALUES(%s, %s, %s)", (username, password, email))
+            cur.execute("INSERT INTO Users(username, password, email, points) VALUES(%s, %s, %s, %s)", (username, password, email, 1000))
             mysql.get_db().commit()
             return jsonify({"message": "Register successful!"})
 

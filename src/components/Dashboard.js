@@ -48,6 +48,7 @@ class Dashboard extends Component {
             loading={this.props.store.getState().slot_machine.loading}
             points={this.props.store.getState().login.points}
             status={this.props.store.getState().slot_machine.message}
+            auto={this.props.store.getState().slot_machine.auto}
             changeNumbers={() => {
               this.slot = setInterval(() => { 
                   this.slotCounter = this.slotCounter + 1;
@@ -55,9 +56,30 @@ class Dashboard extends Component {
                   if(this.slotCounter == 7){
                     clearInterval(this.slot)
                     this.slotCounter = 0;
-                    this.props.store.dispatch({type: "RUN_SLOT", data: {"username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
+                    this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": false, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
                   }
               }, 300);
+            }}
+            changeNumbersAuto={(auto) => {
+              if(!auto){
+                this.slot = setInterval(() => { 
+                    this.slotCounter = this.slotCounter + 1;
+                    this.props.store.dispatch({type: "CHANGE_NUMBERS_SLOT"});    
+                    if(this.slotCounter == 7){
+                      clearInterval(this.slot)
+                      this.slotCounter = 0;
+                      this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": true, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
+                    }
+                }, 400);
+              } else {
+                clearInterval(this.slot);
+                this.slotCounter = 0;
+                this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": false, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
+              }
+            }}
+            cancelAuto={() => {
+              clearInterval(this.slot);
+              this.slotCounter = 0;
             }}
            />
         </div>

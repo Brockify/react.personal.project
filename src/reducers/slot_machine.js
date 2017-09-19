@@ -1,13 +1,13 @@
 import Immutable from 'seamless-immutable';
-const initialState = Immutable({"message": "", "a": 1, "b": 2, "c": 3, "d": 7, "e": 7, "f": 7, "g": 8, "h": 9, "i": "5", "totalPoints": 100, "loading": false});
+const initialState = Immutable({"auto": false, "message": "", "a": 1, "b": 2, "c": 3, "d": 7, "e": 7, "f": 7, "g": 8, "h": 9, "i": "5", "loading": false, "winners": {"topDiagnol": false, "top": false, "middle": false, "bottom": false, "bottomDiagnol": false}});
 export default (state = initialState, action) => {
   switch (action.type) {
 
     case 'RUN_SLOT':
-        return state.merge({"loading": true, "message": "Uploading points..."})
+        return state.merge({"loading": true, "message": "Uploading points...", "auto": action.data.auto})
     
     case 'UPLOAD_POINTS_SUCCESS':
-        return state.merge({"loading": false, "message": action.data.message})
+        return state.merge({"winners": action.data.winners, "loading": false, "message": action.data.message})
 
     case 'UPLOAD_POINTS_FAIL':
         if(action.data.points != null){
