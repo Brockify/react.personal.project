@@ -80,6 +80,7 @@ class Dashboard extends Component {
             cancelAuto={() => {
               clearInterval(this.slot);
               this.slotCounter = 0;
+              this.props.store.dispatch({type: "CANCEL_AUTO_SLOT"});    
             }}
            />
         </div>

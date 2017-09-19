@@ -28,6 +28,8 @@ export default (state = initialState, action) => {
        var i = getRandomWeightedNumber()   
        return state.merge({"a": a, "b": b, "c": c, "d": d, "e": e, "f": f, "g": g, "h": h, "i": i, "message": "Spinning...", "loading": true})
     
+    case 'CANCEL_AUTO_SLOT':
+        return state.merge({"auto": false, "loading": false, "message" : ""})
    default:
       return state
   }
