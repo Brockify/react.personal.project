@@ -51,6 +51,7 @@ const DashboardComponenet = (props) => {
       logged_in={store.getState().login.logged_in}
       setLogin={(username) => store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
       store={store}
+      auto={store.getState().slot_machine.auto}
       value={"Dashboard"}
     />
   );

@@ -1,5 +1,5 @@
 import Immutable from 'seamless-immutable';
-const initialState = Immutable({"auto": false, "message": "", "a": 1, "b": 2, "c": 3, "d": 7, "e": 7, "f": 7, "g": 8, "h": 9, "i": "5", "loading": false, "winners": {"topDiagnol": false, "top": false, "middle": false, "bottom": false, "bottomDiagnol": false}});
+const initialState = Immutable({"counter": 0, "auto": false, "message": "", "a": 1, "b": 2, "c": 3, "d": 7, "e": 3, "f": 6, "g": 1, "h": 7, "i": 5, "loading": false, "winners": {"topDiagnol": false, "top": false, "middle": false, "bottom": false, "bottomDiagnol": false}});
 export default (state = initialState, action) => {
   switch (action.type) {
 
@@ -26,10 +26,10 @@ export default (state = initialState, action) => {
        var g = getRandomWeightedNumber()   
        var h = getRandomWeightedNumber()    
        var i = getRandomWeightedNumber()   
-       return state.merge({"a": a, "b": b, "c": c, "d": d, "e": e, "f": f, "g": g, "h": h, "i": i, "message": "Spinning...", "loading": true})
+       return state.merge({"auto": action.data.auto, "counter": state.counter + 1, "a": a, "b": b, "c": c, "d": d, "e": e, "f": f, "g": g, "h": h, "i": i, "message": "Spinning...", "loading": true})
     
     case 'CANCEL_AUTO_SLOT':
-        return state.merge({"auto": false, "loading": false, "message" : ""})
+        return state.merge({"winners": {"topDiagnol": false, "top": false, "middle": false, "bottom": false, "bottomDiagnol": false}, "auto": false, "loading": false, "message" : ""})
    default:
       return state
   }

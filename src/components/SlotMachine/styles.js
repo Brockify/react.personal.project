@@ -2,16 +2,16 @@ let styles = {
     slot_column: {
         "height": "90px",
         "width": "120px",
-        "textAlign": "center",
         "lineHeight": "80px",
         "color": "white",
         "backgroundColor": "black",
-        "fontSize": "14pt"
-    }, alert_div: {
+        "fontSize": "14pt",
+        "overflow": "hidden"        
+        }, alert_div: {
         "textAlign": "center", 
         "marginTop": "5px", 
         "paddingBottom": "60px",
-        "width": "100%"
+        "width": "100%",
     },
     alert_style: {
         "display": "block"
@@ -28,6 +28,8 @@ let styles = {
         "paddingLeft": "50px", 
         "paddingRight": "50px", 
         "borderRadius": "6px",
+        "animationName": "slot",
+        "animationDuration": "4s",
     }, 
     reset_button_style: {
         "marginTop": "5px", 
@@ -56,6 +58,10 @@ let styles = {
         "width": "50%",
         "backgroundColor": "green", 
         "color": "white"
+    }, indicator: {
+        display: "block",
+    }, indicator_hidden: {
+        display: "none",
     }
   }
 export default styles;

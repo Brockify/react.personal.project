@@ -1,0 +1,7 @@
+.anim-enter {
+    transition: transform 300ms linear;  
+  }
+  
+  .anim-enter.anim-enter-active {
+    transform: translate(0px, 90px)              
+  }
