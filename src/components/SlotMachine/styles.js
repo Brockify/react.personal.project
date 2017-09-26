@@ -1,7 +1,7 @@
 let styles = { 
     slot_column: {
         "height": "90px",
-        "width": "30%",
+        "width": "31%",
         "lineHeight": "90px",
         "color": "white",
         "backgroundColor": "black",
@@ -60,10 +60,10 @@ let styles = {
         "color": "white"
     }, indicator: {
         display: "block",
-        width: "10%"
+        width: "7%"
     }, indicator_hidden: {
         display: "none",
-        width: "10%"        
+        width: "7%"        
     }
   }
 export default styles;

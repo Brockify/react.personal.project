@@ -82,8 +82,8 @@ class SlotMachine extends Component {
         <div>
           <form style={styles.formStyle}>
             <h1 style={{"textAlign": "center"}}>Slot Machine</h1>
-            <div style={{"float": "left", "width": "70%"}}>
-              <table style={{"margin": "0 auto", "width": "80%"}}>
+            <div style={{"float": "left", "width": "80%"}}>
+              <table style={{"margin": "0 auto"}}>
                 <tr>
                   <td style={{width: "50px"}}>
                     <div style={this.topIndicatorStyle}>
