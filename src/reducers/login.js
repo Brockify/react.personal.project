@@ -3,8 +3,8 @@ const initialState = Immutable({'points': 0, "message": "", "username": "", "pas
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESSFUL':
-      localStorage.setItem("user", JSON.stringify({"username": state.username, "password": state.password, "points": action.data.points}));    
-      return state.merge({"message": action.data.message, "password": "", "logged_in": true, "points": action.data.points})
+      localStorage.setItem("user", JSON.stringify({"username": action.data.username, "password": state.password, "points": action.data.points}));    
+      return state.merge({"message": action.data.message, "password": "", "logged_in": true, "points": action.data.points, "username": action.data.username})
     case 'LOGIN_FAIL':
     return state.merge({"message": action.data.message, "logged_in": false})
     case 'LOGIN':

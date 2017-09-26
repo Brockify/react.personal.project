@@ -7,7 +7,7 @@ function* login(action) {
       if(response.message !== null && response.message !== "Login success!"){
         yield put({type: "LOGIN_FAIL", data: {'message': response.message}});        
       } else {
-        yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "points": response.points}});                      
+        yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "points": response.points, "username": response.username}});                      
       }
    } catch (e) {
       //called if the endpoint is not valid or cannot be hit

@@ -26,11 +26,11 @@ class HelloWorld(Resource):
     @app.route('/Login/<string:username>/<string:password>', methods=['GET'])
     def Login(username, password):
         cur = mysql.get_db().cursor()
-        cur.execute('''SELECT Password, Points FROM Users where Username=%s''', (username))
+        cur.execute('''SELECT Password, Points, Username FROM Users where Username=%s''', (username))
         rv = cur.fetchone()
         if(rv != None):
             if(rv[0] == password):
-                return jsonify({"message": "Login success!", "points": rv[1]})
+                return jsonify({"message": "Login success!", "points": rv[1], "username": rv[2]})
             else:
                 return jsonify({"message": "Password is wrong. Please try again."})
         else:

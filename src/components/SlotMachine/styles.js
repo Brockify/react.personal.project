@@ -1,13 +1,13 @@
 let styles = { 
     slot_column: {
         "height": "90px",
-        "width": "120px",
-        "lineHeight": "80px",
+        "width": "30%",
+        "lineHeight": "90px",
         "color": "white",
         "backgroundColor": "black",
         "fontSize": "14pt",
         "overflow": "hidden"        
-        }, alert_div: {
+    }, alert_div: {
         "textAlign": "center", 
         "marginTop": "5px", 
         "paddingBottom": "60px",
@@ -60,8 +60,10 @@ let styles = {
         "color": "white"
     }, indicator: {
         display: "block",
+        width: "10%"
     }, indicator_hidden: {
         display: "none",
+        width: "10%"        
     }
   }
 export default styles;

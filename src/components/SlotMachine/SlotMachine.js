@@ -82,74 +82,75 @@ class SlotMachine extends Component {
         <div>
           <form style={styles.formStyle}>
             <h1 style={{"textAlign": "center"}}>Slot Machine</h1>
-            <table style={{"margin": "0 auto"}}>
-              <tr>
-                <td style={{width: "50px"}}>
-                  <div style={this.topIndicatorStyle}>
-                    @
-                  </div>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                    <img src={require("../../img/" + a + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + b + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + c + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-              </tr>
-              <tr>
-                <td style={{width: "50px"}}>
-                  <div style={this.middleIndicatorStyle}>
-                    @
-                  </div>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + d + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + e + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + f + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-              </tr>
-              <tr>
-                <td style={{width: "50px"}}>
-                  <div style={this.bottomIndicatorStyle}>
-                    @
-                  </div>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + g + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + h + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-                <td style={styles.slot_column}>
-                  <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
-                  <img src={require("../../img/" + i + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
-                  </ReactCSSTransitionGroup>
-                </td>
-              </tr>
-            </table>
+            <div style={{"float": "left", "width": "70%"}}>
+              <table style={{"margin": "0 auto", "width": "80%"}}>
+                <tr>
+                  <td style={{width: "50px"}}>
+                    <div style={this.topIndicatorStyle}>
+                      @
+                    </div>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                      <img src={require("../../img/" + a + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + b + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + c + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{width: "50px"}}>
+                    <div style={this.middleIndicatorStyle}>
+                      @
+                    </div>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + d + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + e + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + f + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{width: "50px"}}>
+                    <div style={this.bottomIndicatorStyle}>
+                      @
+                    </div>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + g + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + h + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                  <td style={styles.slot_column}>
+                    <ReactCSSTransitionGroup transitionName="anim" transitionEnter={true} transitionLeave={false}>
+                    <img src={require("../../img/" + i + ".png")} style={{"height": "50px", "width": "50px"}} key={this.props.slotCounter}/>
+                    </ReactCSSTransitionGroup>
+                  </td>
+                </tr>
+              </table>
             <div style={{"textAlign": "center", "marginTop": "10px"}}>
               <Button onMouseEnter={() => this.setState({spinButtonHover: true})} onMouseOut={() => this.setState({spinButtonHover: false})} style={this.spinButton} onClick={() => {
                   if(!this.state.loading){
@@ -174,6 +175,22 @@ class SlotMachine extends Component {
               <Alert bsStyle={this.alertStyle["style-type"]} style={this.alertStyle.style}>
                   <strong key={this.props.status}>{this.props.status}</strong>
               </Alert>
+            </div>
+            </div>
+            <div style={{"float": "left", "width": "50%"}}>
+              <table style={{"margin": "0 auto"}}>
+                <tr>
+                  <td>
+                    <img src='../../img/1.png'/>
+                  </td>
+                  <td>
+                    <img src='../../img/1.png'/>
+                  </td>
+                  <td>
+                    <img src='../../img/1.png'/>
+                  </td>
+                </tr>
+             </table>
             </div>
           </form>
         </div>)
