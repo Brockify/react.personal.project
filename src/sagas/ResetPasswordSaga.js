@@ -16,7 +16,7 @@ function* resetPassword(action) {
 }
 
 function getResetPassword(username){
-    if(username == ""){
+    if(username === ""){
         return ({"message": "Please type a valid username."})
     } else {
         var myHeaders = new Headers();

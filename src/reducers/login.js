@@ -1,5 +1,5 @@
 import Immutable from 'seamless-immutable';
-const initialState = Immutable({'points': 0, "message": "", "username": "", "password": "", "logged_in": false, "buttonHover": false});
+const initialState = Immutable({'alertStyle': {"display": "none"}, 'points': 0, "message": "", "username": "", "password": "", "logged_in": false, "buttonHover": false});
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESSFUL':
@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
       return state.merge({"message": action.data.message, "points": action.data.points})
     case 'UPLOAD_POINTS_FAIL':
         if(action.data.points != null){
-          var cachedUser = JSON.parse(localStorage.getItem("user"));
+          cachedUser = JSON.parse(localStorage.getItem("user"));
           cachedUser.points = action.data.points;
           console.log(cachedUser);
           localStorage.setItem("user", JSON.stringify(cachedUser));
@@ -36,6 +36,12 @@ export default (state = initialState, action) => {
     case 'LOGOUT': 
       localStorage.setItem("user", null);        
       return state.merge({"logged_in": false, "message": "", "username": ""});
+    
+     case 'HIDE_ALERT_LOGIN':
+        return state.merge({"alertStyle": action.data.alertStyle, "message": ""})
+
+      case 'SHOW_ALERT_LOGIN':
+        return state.merge({"alertStyle": action.data.alertStyle})
     default:
       return state
   }

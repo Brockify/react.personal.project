@@ -5,11 +5,13 @@ function* login(action) {
    try {
       var response = yield(getLogin(action.data.username, action.data.password));
       if(response.message !== null && response.message !== "Login success!"){
-        yield put({type: "LOGIN_FAIL", data: {'message': response.message}});        
+        yield put({type: "LOGIN_FAIL", data: {'message': response.message}});    
+        console.log(action.data.alertStyles);
       } else {
         yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "points": response.points, "username": response.username}});                      
       }
    } catch (e) {
+     console.log(e);
       //called if the endpoint is not valid or cannot be hit
       yield put({type: "LOGIN_FAIL", data: {'message': 'Unavailable. Please try again later.'}});
    }

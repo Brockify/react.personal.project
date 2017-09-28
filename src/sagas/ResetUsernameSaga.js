@@ -16,7 +16,7 @@ function* resetUsername(action) {
 }
 
 function getResetUsername(email){
-    if(email == ""){
+    if(email === ""){
         return ({"message": "Please type a valid email."})
     } else {
         var myHeaders = new Headers();

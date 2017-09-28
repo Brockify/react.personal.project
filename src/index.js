@@ -20,7 +20,6 @@ import registerSaga from './sagas/RegisterSaga'
 import changePasswordSaga from './sagas/ChangePasswordSaga'
 import resetPasswordSaga from './sagas/ResetPasswordSaga'
 import resetUsernameSaga from './sagas/ResetUsernameSaga'
-import slotMachineSaga from './sagas/SlotMachineSaga'
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
 const rootEl = document.getElementById('root')
@@ -34,11 +33,14 @@ const LoginComponent = (props) => {
       password={store.getState().login.password}
       logged_in={store.getState().login.logged_in}
       store={store}
-      onLogin={(username, password) => store.dispatch({type: 'LOGIN', data: {'username': username, 'password': password}})}
+      onLogin={(username, password, alertStyles) => store.dispatch({type: 'LOGIN', data: {'username': username, 'password': password}})}
       onChangeUsername={(event) => store.dispatch({type: "CHANGE_USERNAME_LOGIN", data: {"username": event.target.value}})}
       onChangePassword={(event) => store.dispatch({type: "CHANGE_PASSWORD_LOGIN", data: {"password": event.target.value}})}
       setLogin={(username) => store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
       resetLogin={() => store.dispatch({type: "RESET_LOGIN", data: {"message": ""}})}
+      alertStyle={store.getState().login.alertStyle}
+      hideAlert={(alertStyle) => store.dispatch({type: "HIDE_ALERT_LOGIN", data: {"alertStyle": alertStyle}})}
+      showAlert={(alertStyle) => store.dispatch({type: "SHOW_ALERT_LOGIN", data: {"alertStyle": alertStyle}})}
     />
   );
 }
@@ -51,7 +53,6 @@ const DashboardComponenet = (props) => {
       logged_in={store.getState().login.logged_in}
       setLogin={(username) => store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
       store={store}
-      auto={store.getState().slot_machine.auto}
       value={"Dashboard"}
     />
   );
@@ -75,6 +76,14 @@ const RegisterComponent = (props) => {
   );
 }
 
+/*
+      <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
+        <p>
+          Brock's Personal Project
+        </p>
+      </div>
+*/
+
 const render = () => 
   ReactDOM.render(
   <Router>
@@ -82,11 +91,6 @@ const render = () =>
       <Route exact path="/" component={LoginComponent}/>
       <Route path="/register" component={RegisterComponent}/>
       <Route path="/dashboard" component={DashboardComponenet}/>
-      <div style={{"width": "100%", "backgroundColor": "#00b0c7", "textAlign": "center", "height": "50px", "position": "fixed", "bottom": "0", "lineHeight": "50px", "color": "white"}}>
-        <p>
-          Brock's Personal Project
-        </p>
-      </div>
     </div>
   </Router>,
   rootEl)
@@ -98,7 +102,6 @@ sagaMiddleware.run(registerSaga)
 sagaMiddleware.run(changePasswordSaga)
 sagaMiddleware.run(resetPasswordSaga)
 sagaMiddleware.run(resetUsernameSaga)
-sagaMiddleware.run(slotMachineSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
   store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser)}})

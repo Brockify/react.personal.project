@@ -3,17 +3,10 @@ import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import ChangePassword from './ChangePassword/ChangePassword'
 import { Redirect } from 'react-router';
-import Login from './Login/Login'
 import ResetUsername from './ResetUsername/ResetUsername'
 import ResetPassword from './ResetPassword/ResetPassword'
-import SlotMachine from './SlotMachine/SlotMachine'
 
 class Dashboard extends Component {
-  slot = null;
-  slotCounter = 0;
-  constructor(props){
-    super(props);
-  }
 
   render() {
     //styles for navbar
@@ -31,108 +24,42 @@ class Dashboard extends Component {
           <li style={nav_item_style}><Link style={link_style} to="/dashboard">Dashboard</Link></li>
           <li style={nav_item_style} onClick={()=> this.props.logout()}><Link style={link_style} to="/">Logout</Link></li>
         </ul>
-        <div style={{"textAlign": "center"}}>
-          <h1>{this.props.value}</h1>
-        </div>
-        <div style={{"marginTop": "10px"}}>
-          <SlotMachine
-            a={this.props.store.getState().slot_machine.a}
-            b={this.props.store.getState().slot_machine.b}
-            c={this.props.store.getState().slot_machine.c}
-            d={this.props.store.getState().slot_machine.d}
-            e={this.props.store.getState().slot_machine.e}
-            f={this.props.store.getState().slot_machine.f}
-            g={this.props.store.getState().slot_machine.g}
-            h={this.props.store.getState().slot_machine.h}
-            i={this.props.store.getState().slot_machine.i}
-            slotCounter={this.props.store.getState().slot_machine.counter}
-            winners={this.props.store.getState().slot_machine.winners}
-            loading={this.props.store.getState().slot_machine.loading}
-            points={this.props.store.getState().login.points}
-            status={this.props.store.getState().slot_machine.message}
-            auto={this.props.store.getState().slot_machine.auto}
-            changeNumbers={(auto) => {
-              console.log(auto);
-              if(this.props.auto === false){
-                this.slot = setInterval(() => { 
-                    this.slotCounter = this.slotCounter + 1;
-                    this.props.store.dispatch({type: "CHANGE_NUMBERS_SLOT", data: {"auto": false}});    
-                    if(this.slotCounter == 7){
-                      clearInterval(this.slot)
-                      this.slotCounter = 0;
-                      this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": false, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
-                    }
-                }, 500);
-              }
-            }}
-
-            changeNumbersAuto={(auto) => {
-              if(!this.props.auto){
-                this.slot = setInterval(() => { 
-                    this.slotCounter = this.slotCounter + 1;
-                    this.props.store.dispatch({type: "CHANGE_NUMBERS_SLOT", data: {"auto": true}});    
-                    if(this.slotCounter == 7){
-                        clearInterval(this.slot)
-                        this.slotCounter = 0;
-                        this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": true, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
-                    }
-                }, 500);
-              } else {
-                clearInterval(this.slot);
-                this.slotCounter = 0;
-                this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": false, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
-              }
-            }}
-            cancelAuto={() => {
-              clearInterval(this.slot);
-              this.slotCounter = 0;
-              this.props.store.dispatch({type: "CANCEL_AUTO_SLOT"});    
-            }}
-
-            changeAutoRender={() => {
-              this.slot = setInterval(() => { 
-                    this.slotCounter = this.slotCounter + 1;
-                    this.props.store.dispatch({type: "CHANGE_NUMBERS_SLOT", data: {"auto": true}});    
-                    if(this.slotCounter == 7){
-                        clearInterval(this.slot)
-                        this.slotCounter = 0;
-                        this.props.store.dispatch({type: "RUN_SLOT", data: {"auto": true, "username": this.props.store.getState().login.username, "points": this.props.store.getState().login.points, "a": this.props.store.getState().slot_machine.a, "b": this.props.store.getState().slot_machine.b, "c": this.props.store.getState().slot_machine.c, "d": this.props.store.getState().slot_machine.d, "e": this.props.store.getState().slot_machine.e, "f": this.props.store.getState().slot_machine.f, "g": this.props.store.getState().slot_machine.g, "h": this.props.store.getState().slot_machine.h, "i": this.props.store.getState().slot_machine.i}})
-                    }
-                }, 500);
-            }}
-           />
-        </div>
-        <div style={{"marginTop": "10px"}}>
-          <ChangePassword
-            onResetPassword={(username, oldPassword, newPassword, newConfirmPassword) => this.props.store.dispatch({type: "CHANGE_PASSWORD", data: {"username": username, "oldPassword": oldPassword, "newPassword": newPassword, "newConfirmPassword": newConfirmPassword}})}
-            onChangeOldPassword={(event) => this.props.store.dispatch({type: "CHANGE_OLD_CHANGE", data: {"oldPassword": event.target.value}})}
-            resetMessage={(event) => this.props.store.dispatch({type: "RESET_MESSAGE_CHANGE"})}
-            onChangeNewPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CHANGE", data: {"newPassword": event.target.value}})}
-            onChangeNewConfirmPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CONFIRM_CHANGE", data: {"newConfirmPassword": event.target.value}})}
-            oldPassword={this.props.store.getState().change_password.oldPassword}
-            newPassword={this.props.store.getState().change_password.newPassword}
-            newConfirmPassword={this.props.store.getState().change_password.newConfirmPassword}
-            status={this.props.store.getState().change_password.message}
-            username={this.props.store.getState().login.username}
-          />
-        </div>
-        <div style={{"marginTop": "10px"}}>
-          <ResetPassword
-          status={this.props.store.getState().reset_password.message}
-          username={this.props.store.getState().reset_password.username}
-          onResetPassword={(username) => this.props.store.dispatch({type: "RESET_PASSWORD", data: {"username": username}})}
-          onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_RESET", data: {"username": event.target.value}})}
-          resetMessage={() => this.props.store.dispatch({type: "RESET_PASSWORD_RESET"})}
-          />
-        </div>
-        <div style={{"marginTop": "10px", "paddingBottom": "60px"}}>
-          <ResetUsername
-            status={this.props.store.getState().reset_username.message}
-            email={this.props.store.getState().reset_username.email}
-            onChangeEmail={(event) => this.props.store.dispatch({type: "CHANGE_EMAIL_RESET_USERNAME", data: {"email": event.target.value}})}
-            onResetUsername={(email) => this.props.store.dispatch({type: "RESET_USERNAME", data: {"email": email}})}
-            resetMessage={() => this.props.store.dispatch({type: "RESET_USERNAME_RESET_MESSAGE"})}
-           />
+        <div style={{"animation":"moveInL 1s"}}>
+          <div style={{"textAlign": "center"}}>
+            <h1>{this.props.value}</h1>
+          </div>
+          <div style={{"marginTop": "10px"}}>
+            <ChangePassword
+              onResetPassword={(username, oldPassword, newPassword, newConfirmPassword) => this.props.store.dispatch({type: "CHANGE_PASSWORD", data: {"username": username, "oldPassword": oldPassword, "newPassword": newPassword, "newConfirmPassword": newConfirmPassword}})}
+              onChangeOldPassword={(event) => this.props.store.dispatch({type: "CHANGE_OLD_CHANGE", data: {"oldPassword": event.target.value}})}
+              resetMessage={(event) => this.props.store.dispatch({type: "RESET_MESSAGE_CHANGE"})}
+              onChangeNewPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CHANGE", data: {"newPassword": event.target.value}})}
+              onChangeNewConfirmPassword={(event) => this.props.store.dispatch({type: "CHANGE_NEW_CONFIRM_CHANGE", data: {"newConfirmPassword": event.target.value}})}
+              oldPassword={this.props.store.getState().change_password.oldPassword}
+              newPassword={this.props.store.getState().change_password.newPassword}
+              newConfirmPassword={this.props.store.getState().change_password.newConfirmPassword}
+              status={this.props.store.getState().change_password.message}
+              username={this.props.store.getState().login.username}
+            />
+          </div>
+          <div style={{"marginTop": "10px"}}>
+            <ResetPassword
+            status={this.props.store.getState().reset_password.message}
+            username={this.props.store.getState().reset_password.username}
+            onResetPassword={(username) => this.props.store.dispatch({type: "RESET_PASSWORD", data: {"username": username}})}
+            onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_RESET", data: {"username": event.target.value}})}
+            resetMessage={() => this.props.store.dispatch({type: "RESET_PASSWORD_RESET"})}
+            />
+          </div>
+          <div style={{"marginTop": "10px", "paddingBottom": "60px"}}>
+            <ResetUsername
+              status={this.props.store.getState().reset_username.message}
+              email={this.props.store.getState().reset_username.email}
+              onChangeEmail={(event) => this.props.store.dispatch({type: "CHANGE_EMAIL_RESET_USERNAME", data: {"email": event.target.value}})}
+              onResetUsername={(email) => this.props.store.dispatch({type: "RESET_USERNAME", data: {"email": email}})}
+              resetMessage={() => this.props.store.dispatch({type: "RESET_USERNAME_RESET_MESSAGE"})}
+            />
+          </div>
         </div>
       </div>
     );

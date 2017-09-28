@@ -2,7 +2,7 @@ let styles = {
     formStyle: {
         "textAlign": "center",
         "margin": "0 auto",
-        "width": "70%",
+        "width": "85%",
         "height": "350px", 
         "border": "2px solid grey", 
         "paddingLeft": "50px", 

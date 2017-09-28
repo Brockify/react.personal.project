@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
 import {Button, Alert} from 'react-bootstrap'
 import styles from './styles'
 
@@ -16,7 +14,7 @@ class ResetUsername extends Component {
 
     render() {
         if(this.props.status !== ""){
-            if(this.props.status == "Username sent to your email."){
+            if(this.props.status === "Username sent to your email."){
                 this.alertStyle = {'style': styles.alert_display, 'style-type': 'success'}
             } else {
                 this.alertStyle = {'style': styles.alert_display, 'style-type': 'danger'}

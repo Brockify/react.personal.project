@@ -14,15 +14,16 @@
         "textDecoration": "none"
     },
     alert_style: {
-        "display": "block"
+        "display": "block",
+        "animation": "fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s",
     },
     alert_hide: {
-        "display": "none"
+        "display": "none",
     }, 
     formStyle: {
         "textAlign": "center",
         "margin": "0 auto",
-        "width": "70%",
+        "width": "85%",
         "height": "300px", 
         "border": "2px solid grey", 
         "paddingLeft": "50px", 
@@ -52,9 +53,10 @@
     },
     alert_div: {
         "textAlign": "center", 
-        "height": "20%", 
-        "marginTop": "5%", 
-        "paddingBottom": "60px"
+        "bottom": "40px", 
+        "position": "fixed",
+        "width": "100%",
+        "zIndex": "999",        
     },
     footer: {
         "width": "100%", 

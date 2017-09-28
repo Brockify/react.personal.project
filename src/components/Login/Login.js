@@ -7,19 +7,23 @@ import styles from './styles'
 
 class Login extends Component {
 
-  alertStyle = "";
   loginButtonStyle = "";
 
   componentWillMount(){
-    this.state = {buttonHover: false};    
+    this.state = {buttonHover: false, alertStyle: ""};    
     console.log("Login Component");
   }
 
+  componentDidMount(){
+
+  }
+
   render() {
-    if(this.props.status !== ""){
-      this.alertStyle = styles.alert_display
-    } else {
-      this.alertStyle = styles.alert_hide
+    if(this.props.status !== "" && this.props.alertStyle.display !== "block"){
+      this.props.showAlert(styles.alert_style)
+      setTimeout(() => {
+        this.props.hideAlert(styles.alert_hide);
+      }, 2900)
     }
 
     if(this.state.buttonHover){
@@ -46,7 +50,7 @@ class Login extends Component {
             <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.loginButtonStyle} onClick={() => {this.props.onLogin(this.props.username, this.props.password)}} bsSize="large" block>Login</Button>
           </form>
           <div style={styles.alert_div}>
-            <Alert bsStyle={"danger"} style={this.alertStyle}>
+            <Alert ref="alert" bsStyle={"danger"} style={this.props.alertStyle}>
               <strong>{this.props.status}</strong>
             </Alert>
           </div>

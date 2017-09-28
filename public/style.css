@@ -1,7 +1,14 @@
-.anim-enter {
-    transition: transform 300ms linear;  
-  }
-  
-  .anim-enter.anim-enter-active {
-    transform: translate(0px, 90px)              
-  }
+@keyframes moveInL {
+  0% { transform: translate(-90%, 0); }
+  100% { transform: translate( 0%, 0); }
+}
+
+@keyframes fadeinSnackbar {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeoutSnackbar {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
