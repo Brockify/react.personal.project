@@ -4,11 +4,17 @@
 }
 
 @keyframes fadeinSnackbar {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {margin-bottom: -40px; opacity: 0;}
+  to {margin-bottom: 20px; opacity: 1;}
 }
 
 @keyframes fadeoutSnackbar {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {margin-bottom: 20px; opacity: 1;}
+  to {margin-bottom: -40px; opacity: 0;}
+}
+
+
+@keyframes moveInR {
+  0% { transform: translate(90%, 0); }
+  100% { transform: translate( 0%, 0); }
 }

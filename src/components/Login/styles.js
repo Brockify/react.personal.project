@@ -16,6 +16,12 @@
     alert_style: {
         "display": "block",
         "animation": "fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s",
+        "bottom": "40px"    
+    },
+    alert_style_small: {
+        "display": "block",
+        "animation": "fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s",
+        "bottom": "0px"    
     },
     alert_hide: {
         "display": "none",
@@ -24,7 +30,7 @@
         "textAlign": "center",
         "margin": "0 auto",
         "width": "85%",
-        "height": "300px", 
+        "height": "350px", 
         "border": "2px solid grey", 
         "paddingLeft": "50px", 
         "paddingRight": "50px", 
@@ -36,7 +42,7 @@
         "width": "100%", 
         "marginTop": "5px", 
         "textAlign": "center", 
-        "height": "20%", 
+        "height": "14%", 
         "fontSize": "12pt"
     },
     login_button_style: {
@@ -53,10 +59,17 @@
     },
     alert_div: {
         "textAlign": "center", 
-        "bottom": "40px", 
+        "bottom": "40px",
         "position": "fixed",
         "width": "100%",
-        "zIndex": "999",        
+        "zIndex": "999",  
+    },
+    alert_div_small: {
+        "textAlign": "center", 
+        "bottom": "0px",
+        "position": "fixed",
+        "width": "100%",
+        "zIndex": "999",  
     },
     footer: {
         "width": "100%", 
@@ -64,14 +77,19 @@
         "textAlign": "center", 
         "height": "50px", 
         "position": "fixed", 
-        "bottom": "0", 
+        "bottom": "0px", 
         "lineHeight": "50px", 
         "color": "white"
     }, header: {
         "height": "20%"
+    }, "@media screen and (min-height: 400px)": {
+        alert_div: {
+            "textAlign": "center", 
+            "bottom": "0px",
+            "position": "fixed",
+            "width": "100%",
+            "zIndex": "999",  
+        }
     }
-
-
-
-  }
+}
 export default styles;

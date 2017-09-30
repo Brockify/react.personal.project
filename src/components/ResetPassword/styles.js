@@ -42,6 +42,20 @@ let styles = {
     },
     alert_hide: {
         "display": "none"
+    }, 
+    nav_bar_style: {
+        "backgroundColor":"#00b0c7", 
+        "height": "50px"
+    },
+    nav_item_style: {
+        "height": "50px",
+        "display": "inline",
+        "marginLeft": "5%",
+        "lineHeight": "50px"
+    },
+    link_style: {
+        "color": "#fff", 
+        "textDecoration": "none"
     }
 
   }

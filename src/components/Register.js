@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {Alert, Button} from 'react-bootstrap'
 import { Redirect } from 'react-router';
+import { CSSTransitionGroup } from 'react-transition-group'
 
 class Register extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Register extends Component {
     const { status, onRegister } = this.props
 
     const textInputStyle = {"borderRadius": "6px", "border": "1px solid grey", "width": "100%", "marginTop": "5px", "textAlign": "center", "height": "15%", "fontSize": "12pt"};
-    const formStyle = {"textAlign": "center", "margin": "0 auto", "width": "70%", "height": "350px", "border": "2px solid grey", "paddingLeft": "50px", "paddingRight": "50px", "borderRadius": "6px"}
+    const formStyle = {"animation": "moveInR 1s", "textAlign": "center", "margin": "0 auto", "width": "85%", "height": "350px", "border": "2px solid grey", "paddingLeft": "50px", "paddingRight": "50px", "borderRadius": "6px"}
     //styles for navbar
     const link_style = {"color": "#fff", "textDecoration": "none"}
     const nav_item_style = {"height": "50px", "display": "inline", "marginLeft": "5%", "lineHeight": "50px"}
@@ -47,17 +48,17 @@ class Register extends Component {
             <li style={nav_item_style}><Link style={link_style} to="/">Login</Link></li>
             <li style={nav_item_style}><Link style={link_style} to="/register">Register</Link></li>
           </ul>
-          <form style={formStyle}>
-              <h1 style={{"height": "20%"}}>Register</h1>
-              <input value={this.props.username} type="text" onChange={this.props.onChangeUsername.bind(this)} placeholder="Username" style={textInputStyle}/>
-              <br/>
-              <input value={this.props.password} type="text" placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={textInputStyle}/>
-              <br/>
-              <input value={this.props.email} type="text" onChange={this.props.onChangeEmail.bind(this)} placeholder="Email" style={textInputStyle}/>
-              <br/>
-              <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.registerButtonStyle} onClick={() => {onRegister(this.props.username, this.props.password, this.props.email)}} bsSize="large" block>Register</Button>
-              <br/>
-          </form>
+            <form style={formStyle}>
+                <h1 style={{"height": "20%"}}>Register</h1>
+                <input value={this.props.username} type="text" onChange={this.props.onChangeUsername.bind(this)} placeholder="Username" style={textInputStyle}/>
+                <br/>
+                <input value={this.props.password} type="text" placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={textInputStyle}/>
+                <br/>
+                <input value={this.props.email} type="text" onChange={this.props.onChangeEmail.bind(this)} placeholder="Email" style={textInputStyle}/>
+                <br/>
+                <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.registerButtonStyle} onClick={() => {onRegister(this.props.username, this.props.password, this.props.email)}} bsSize="large" block>Register</Button>
+                <br/>
+            </form>
           <div style={{"textAlign": "center", "height": "20%", "marginTop": "5%", "paddingBottom": "60px"}}>
             <Alert bsStyle={"danger"} style={this.alertStyle}>
               <strong>{status}</strong>

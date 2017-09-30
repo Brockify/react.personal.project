@@ -42,15 +42,6 @@ class Dashboard extends Component {
               username={this.props.store.getState().login.username}
             />
           </div>
-          <div style={{"marginTop": "10px"}}>
-            <ResetPassword
-            status={this.props.store.getState().reset_password.message}
-            username={this.props.store.getState().reset_password.username}
-            onResetPassword={(username) => this.props.store.dispatch({type: "RESET_PASSWORD", data: {"username": username}})}
-            onChangeUsername={(event) => this.props.store.dispatch({type: "CHANGE_USERNAME_RESET", data: {"username": event.target.value}})}
-            resetMessage={() => this.props.store.dispatch({type: "RESET_PASSWORD_RESET"})}
-            />
-          </div>
           <div style={{"marginTop": "10px", "paddingBottom": "60px"}}>
             <ResetUsername
               status={this.props.store.getState().reset_username.message}
