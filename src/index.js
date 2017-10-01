@@ -94,7 +94,7 @@ const ForgotPasswordComponent = (props) => {
 const render = () => 
   ReactDOM.render(
   <Router>
-    <div style={{"height": "100%"}}>
+    <div>
       <Route exact path="/" component={LoginComponent}/>
       <Route path="/dashboard" component={DashboardComponenet}/>
       <Route path="/register" component={RegisterComponent}/>

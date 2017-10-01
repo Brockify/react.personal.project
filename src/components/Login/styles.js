@@ -29,12 +29,11 @@
     formStyle: {
         "textAlign": "center",
         "margin": "0 auto",
-        "width": "85%",
-        "height": "350px", 
-        "border": "2px solid grey", 
-        "paddingLeft": "50px", 
-        "paddingRight": "50px", 
-        "borderRadius": "6px"
+        "padding": "0px",
+        "height": "230px",
+        "paddingLeft": "6%",
+        "paddingRight": "6%",
+        "marginTop": "30px"
     },
     text_input_style: {
         "borderRadius": "6px", 
@@ -42,18 +41,18 @@
         "width": "100%", 
         "marginTop": "5px", 
         "textAlign": "center", 
-        "height": "14%", 
+        "height": "40px", 
         "fontSize": "12pt"
     },
     login_button_style: {
         "marginTop": "5px", 
-        "height": "20%", 
+        "height": "40px", 
         "backgroundColor": "white", 
         "color": "black"
     },
     login_button_style_hover: {
         "marginTop": "5px", 
-        "height": "20%", 
+        "height": "40px", 
         "backgroundColor": "green", 
         "color": "white"
     },
@@ -81,7 +80,8 @@
         "lineHeight": "50px", 
         "color": "white"
     }, header: {
-        "height": "20%"
+        "color": "white",
+        "textAlign": "center"
     }, "@media screen and (min-height: 400px)": {
         alert_div: {
             "textAlign": "center", 
@@ -90,6 +90,16 @@
             "width": "100%",
             "zIndex": "999",  
         }
+    }, 
+    loginHeader: {
+        "borderTop": "100px solid gray",
+        "borderRight": "100px solid transparent",
+        "borderLeft": "100px solid transparent"              
+      },
+    triangle: {
+        "textAlign": "center",
+        "marginTop": "5%",
+        "color": "white"
     }
 }
 export default styles;

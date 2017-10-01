@@ -51,23 +51,21 @@ class Login extends Component {
       return (<Redirect push to="forgot_pass" />)
     } else {
       return (
-        <div>
-          <ul style={styles.nav_bar_style}>
-            <li style={styles.nav_item_style}><Link style={styles.link_style} to="/">Login</Link></li>
-            <li style={styles.nav_item_style}>
-              <Link style={styles.link_style} to="/register">Register</Link>
-              </li>
-          </ul>
-          <div style={{"animation": "1s moveInL"}}>
-            <form style={styles.formStyle}>
-              <h1 style={styles.header}>Login</h1>
-              <input type="text" value={this.props.username} onChange={this.props.onChangeUsername.bind(this)} placeholder="Username" style={styles.text_input_style}/>
-              <br/>
-              <input type="text" value={this.props.password} placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={styles.text_input_style}/>
-              <br/>
-              <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.loginButtonStyle} onClick={() => {this.props.onLogin(this.props.username, this.props.password)}} bsSize="large" block>Login</Button>
-              <Button style={{height: "14%", "margin-top": "10px"}} onClick={() => this.setState({forgotpass: true})}>Forgot password?</Button>
-            </form>
+        <div className="one">
+          <div style={{"width": "80%", "margin": "0 auto", "border": "1px solid black","boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
+            <div style={{"fontSize": "18pt", "color": "white", "height": "60px", "backgroundColor": "rgb(0, 176, 199)", "textAlign": "center", "lineHeight": "60px"}}>
+              Login
+            </div>
+           <div style={{"backgroundColor":"white"}}>
+                <form style={styles.formStyle}>
+                <input type="text" value={this.props.username} onChange={this.props.onChangeUsername.bind(this)} placeholder="Username" style={styles.text_input_style}/>
+                <br/>
+                <input type="text" value={this.props.password} placeholder="Password" onChange={this.props.onChangePassword.bind(this)} style={styles.text_input_style}/>
+                <br/>
+                <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.loginButtonStyle} onClick={() => {this.props.onLogin(this.props.username, this.props.password)}} bsSize="large" block>Login</Button>
+                <Button style={{height: "14%", "margin-top": "10px"}} onClick={() => this.setState({forgotpass: true})}>Forgot password?</Button>
+                </form>
+            </div>
           </div>
           <div style={this.alertDivStyle}>
             <Alert ref="alert" bsStyle={"danger"} style={this.props.alertStyle}>

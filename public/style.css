@@ -18,3 +18,13 @@
   0% { transform: translate(90%, 0); }
   100% { transform: translate( 0%, 0); }
 }
+
+.one{
+  width: 100%;
+  padding-top: 100px;
+}
+
+.formDivLogin{
+  height: 300px;
+}
+
