@@ -1,10 +1,10 @@
 import Immutable from 'seamless-immutable';
-const initialState = Immutable({'alertStyle': {"display": "none"}, 'points': 0, "message": "", "username": "", "password": "", "logged_in": false, "buttonHover": false});
+const initialState = Immutable({'alertStyle': {"display": "none"}, 'unread': [], "message": "", "username": "", "password": "", "logged_in": false, "buttonHover": false});
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESSFUL':
-      localStorage.setItem("user", JSON.stringify({"username": action.data.username, "password": state.password, "points": action.data.points}));    
-      return state.merge({"message": action.data.message, "password": "", "logged_in": true, "points": action.data.points, "username": action.data.username})
+      localStorage.setItem("user", JSON.stringify({"username": action.data.username, "password": state.password, "unread": action.data.unread}));    
+      return state.merge({"message": action.data.message, "password": "", "logged_in": true, "unread": action.data.unread, "username": action.data.username})
     case 'LOGIN_FAIL':
     return state.merge({"message": action.data.message, "logged_in": false})
     case 'LOGIN':
@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
     case 'RESET_LOGIN': 
       return state.merge({"message": action.data.message});
     case 'SET_LOGIN':
-      return state.merge({"username": action.data.username.username, "logged_in": true, "points": action.data.username.points})
+      return state.merge({"username": action.data.username.username, "logged_in": true, "unread": action.data.username.unread})
     case 'UPLOAD_POINTS_SUCCESS':
       var cachedUser = JSON.parse(localStorage.getItem("user"));
       cachedUser.points = action.data.points;

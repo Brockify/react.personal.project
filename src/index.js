@@ -24,6 +24,8 @@ import registerSaga from './sagas/RegisterSaga'
 import changePasswordSaga from './sagas/ChangePasswordSaga'
 import resetPasswordSaga from './sagas/ResetPasswordSaga'
 import resetUsernameSaga from './sagas/ResetUsernameSaga'
+import searchSaga from './sagas/SearchSaga'
+
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
 const rootEl = document.getElementById('root')
@@ -59,6 +61,7 @@ const DashboardComponenet = (props) => {
       showSearchModal={() => store.dispatch({type: "SHOW_SEARCH_MODAL"})}
       hideSearchModal={() => store.dispatch({type: "HIDE_SEARCH_MODAL"})}
       store={store}
+      unread={store.getState().login.unread}
       search={store.getState().dashboard.search}
       value={"Dashboard"}
     />
@@ -129,6 +132,7 @@ sagaMiddleware.run(registerSaga)
 sagaMiddleware.run(changePasswordSaga)
 sagaMiddleware.run(resetPasswordSaga)
 sagaMiddleware.run(resetUsernameSaga)
+sagaMiddleware.run(searchSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
   store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser)}})

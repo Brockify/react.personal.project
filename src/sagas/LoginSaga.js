@@ -8,7 +8,10 @@ function* login(action) {
         yield put({type: "LOGIN_FAIL", data: {'message': response.message}});    
         console.log(action.data.alertStyles);
       } else {
-        yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "points": response.points, "username": response.username}});                      
+        for(var i = 0; i < response.unread.length; i++){
+          response.unread[i] = JSON.parse(response.unread[i]);
+        }
+        yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "unread": response.unread, "username": response.username}});                      
       }
    } catch (e) {
      console.log(e);

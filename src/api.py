@@ -27,11 +27,13 @@ class HelloWorld(Resource):
     @app.route('/Login/<string:username>/<string:password>', methods=['GET'])
     def Login(username, password):
         cur = mysql.get_db().cursor()
-        cur.execute('''SELECT Password, Points, Username FROM Users where Username=%s''', (username))
+        cur.execute('''SELECT Password, Username FROM Users where Username=%s''', (username))
         rv = cur.fetchone()
         if(rv != None):
             if(rv[0] == password):
-                return jsonify({"message": "Login success!", "points": rv[1], "username": rv[2]})
+                cur.execute('''SELECT data FROM Unread WHERE username=%s''', (username))
+                unread = cur.fetchall()
+                return jsonify({"message": "Login success!", "username": rv[1], "unread": unread})
             else:
                 return jsonify({"message": "Password is wrong. Please try again."})
         else:
@@ -55,7 +57,7 @@ class HelloWorld(Resource):
                     return jsonify({"message": "Please type in a valid email address"})
                 else:
                     #insert new user
-                    cur.execute("INSERT INTO Users(username, password, email, points) VALUES(%s, %s, %s, %s)", (username, password, email, 1000))
+                    cur.execute("INSERT INTO Users(username, password, email) VALUES(%s, %s, %s)", (username, password, email))
                     mysql.get_db().commit()
                     return jsonify({"message": "Register successful!"})
 
@@ -132,20 +134,6 @@ class HelloWorld(Resource):
                 return jsonify({"message": "Username sent to your email."})
             except Exception as e:
                 return jsonify({"message": jsonify(e)})
-
-    @app.route('/UploadPoints/<string:username>/<int:points>', methods=['POST', 'GET'])
-    def UploadPoints(username, points):
-        cur = mysql.get_db().cursor()
-        cur.execute('''SELECT Points FROM Users where Username=%s''', (username))
-        rv = cur.fetchone()
-        if(str(points) == str(0)):
-            cur.execute('''UPDATE Users SET Points=%s where Username=%s''', ((rv[0] - 25), username))
-            mysql.get_db().commit()
-            return jsonify({"message": "You unfortunately lost. Try again!", "points": (rv[0] - 25)})
-        else:
-            cur.execute('''UPDATE Users SET Points=%s where Username=%s''', ((rv[0] + (points - 25)), username))
-            mysql.get_db().commit()
-            return jsonify({"message": "You won!", "points": (rv[0] + (points - 25))})
 api.add_resource(HelloWorld, '/')
 
 if __name__ == '__main__':
