@@ -1,5 +1,5 @@
 import Immutable from 'seamless-immutable';
-const initialState = Immutable({"username": "", "message": "", "resetPassword": false});
+const initialState = Immutable({"alertStyle": {"display": "none"}, "username": "", "message": "", "resetPassword": false});
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'RESET_PASSWORD':
@@ -16,6 +16,11 @@ export default (state = initialState, action) => {
         
     case 'RESET_PASSWORD_RESET':
         return state.merge({"message": ""})
+    case 'HIDE_ALERT_PASSWORD_RESET':
+        return state.merge({"alertStyle": action.data.alertStyle, "message": ""})
+
+      case 'SHOW_ALERT_PASSWORD_RESET':
+        return state.merge({"alertStyle": action.data.alertStyle})
     default:
       return state
   }

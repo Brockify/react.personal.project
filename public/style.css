@@ -19,12 +19,104 @@
   100% { transform: translate( 0%, 0); }
 }
 
+@keyframes modalEnter {
+  0% { transform: translate(0, 100%);
+  opacity: 0 }
+  100% { 
+    transform: translate( 0%, 0%); 
+    display: block;
+    opacity: 1;
+  }
+}
+
+@keyframes modalExit {
+  0% {
+     transform: translate(0, 0%);
+     opacity: 1;
+  }
+  100% { 
+    transform: translate( 0%, 100%);
+    display: none;
+    opacity: 0;
+  }
+}
+
+
 .one{
-  width: 100%;
   padding-top: 100px;
+  background-color: #a6a6a6;
+  min-height: 92vh
+}
+
+
+.one_nav{
+  background-color: #a6a6a6;
+  min-height: 92vh
 }
 
 .formDivLogin{
   height: 300px;
+}
+
+.loginSubButtons{
+  text-align: center;
+  color: #a6a6a6;
+  margin-top: 3px; 
+  padding: 0px;
+  background-color: white;
+  border: none;
+}
+
+.loginSubButtons:hover{
+  text-align: center;
+  color: #00b8e6;
+  background-color: white;  
+  margin-top: 3px; 
+  padding: 0px;
+  border: none;  
+}
+
+.alert_style {
+  display: block;
+  animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s;
+  background-color: #00b8e6;
+  color: white;  
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 20px;       
+}
+
+.alert_style_small{
+  display: block;
+  animation: fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s;
+  width: 50%;
+  color: white;
+  background-color: #00b8e6;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.alert_hide {
+  display: none;
+}
+
+.dashboard_nav_button_logout{
+  color: #fff;
+  border: none;
+  font-size: 14pt;
+  background-color: #00B8E6;
+  border: 1px solid white;
+  float: right;
+  border-radius: 8px;    
+}
+
+.dashboard_nav_button_logout:hover{
+  color: rgba(242, 242, 242, 0.93);
+  border: none;
+  font-size: 14pt;
+  background-color: rgba(0, 184, 230, 0.8);
+  border: 1px solid white;
+  border-radius: 8px;  
+  float: right;  
 }
 

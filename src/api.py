@@ -5,6 +5,7 @@ from flask import jsonify
 from flaskext.mysql import MySQL
 from random import randint
 from email.mime.text import MIMEText
+from validate_email import validate_email
 import smtplib
 app = Flask(__name__)
 CORS(app)
@@ -44,10 +45,19 @@ class HelloWorld(Resource):
         if(rv != None):
             return jsonify({"message": "Username already taken. Please try again."})
         else:
-            #insert new user
-            cur.execute("INSERT INTO Users(username, password, email, points) VALUES(%s, %s, %s, %s)", (username, password, email, 1000))
-            mysql.get_db().commit()
-            return jsonify({"message": "Register successful!"})
+            cur.execute('''SELECT Email from Users where Email=%s''', (email))
+            rv = cur.fetchone()
+            if(rv != None):
+                return jsonify({"message": "Email already taken. Please try again."})
+            else:
+                is_valid = validate_email(email,verify=True)
+                if(is_valid == False):
+                    return jsonify({"message": "Please type in a valid email address"})
+                else:
+                    #insert new user
+                    cur.execute("INSERT INTO Users(username, password, email, points) VALUES(%s, %s, %s, %s)", (username, password, email, 1000))
+                    mysql.get_db().commit()
+                    return jsonify({"message": "Register successful!"})
 
     @app.route('/ChangePassword/<string:username>/<string:oldPassword>/<string:newPassword>', methods=['POST', 'GET'])
     def ChangePassword(username, oldPassword, newPassword):

@@ -4,11 +4,13 @@ import register from './register'
 import change_password from './change_password'
 import reset_password from './reset_password'
 import reset_username from './reset_username'
+import dashboard from './dashboard'
 
 export default combineReducers({
   login,
   register,
   change_password,
   reset_password,
-  reset_username
+  reset_username,
+  dashboard
 })

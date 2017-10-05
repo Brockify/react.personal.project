@@ -4,8 +4,8 @@ import styles from './styles'
 import {Link} from 'react-router-dom'
 
 class ResetPassword extends Component {
-    alertStyle = "";
     resetButtonStyle = "";
+    alertDivStyle = styles.alert_hide
     
     componentWillMount(){
         this.state = {buttonHover: false}
@@ -14,14 +14,20 @@ class ResetPassword extends Component {
     }
 
     render() {
-        if(this.props.status !== ""){
-            if(this.props.status === "Password reset! Check your email."){
-                this.alertStyle = {'style': styles.alert_display, 'style-type': 'success'}
+        if(this.props.status !== "" && this.props.alertStyle.display !== "block"){
+            
+            //get the window height and change the layout based on it
+            var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            if(height <= 400){
+                this.props.showAlert(styles.alert_style_small)    
+                this.alertDivStyle = styles.alert_div_small    
             } else {
-                this.alertStyle = {'style': styles.alert_display, 'style-type': 'danger'}
+                this.props.showAlert(styles.alert_style)  
+                this.alertDivStyle = styles.alert_div;            
             }
-        } else {
-            this.alertStyle = {'style': styles.alert_hide, 'style-type': 'danger'}
+            setTimeout(() => {
+                this.props.hideAlert(styles.alert_hide);
+            }, 2900)
         }
 
         if(this.state.buttonHover){
@@ -32,25 +38,23 @@ class ResetPassword extends Component {
 
         //styles for navbar
         return (
-        <div>
-            <ul style={styles.nav_bar_style}>
-            <li style={styles.nav_item_style}><Link style={styles.link_style} to="/">Login</Link></li>
-            <li style={styles.nav_item_style}>
-              <Link style={styles.link_style} to="/register">Register</Link>
-              </li>
-          </ul>
-            <div style={{"animation": "moveInR 1s"}}>
-                <form style={styles.formStyle}>
-                    <h4>Reset Password</h4>
-                    <input value={this.props.username} onChange={(event) => this.props.onChangeUsername(event)} style={styles.text_input_style} placeholder="Username"/>
-                    <br/>
-                    <Button onClick={() => this.props.onResetPassword(this.props.username)} onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.resetButtonStyle}  bsSize="large" block>Submit</Button>
-                    <div style={styles.alert_div}>
-                        <Alert bsStyle={this.alertStyle["style-type"]} style={this.alertStyle.style}>
-                            <strong>{this.props.status}</strong>
-                        </Alert>
-                    </div>
-                </form>
+        <div className="one">
+             <div style={{"borderRadius": "15px", "backgroundColor":"white", "width": "80%", "margin": "0 auto", "border": "1px solid black", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "animation": "moveInR 1s", "overflow": "hidden","maxWidth": "700px"}}>
+                <div style={{ "fontSize": "18pt", "color": "white", "height": "60px", "backgroundColor": "#ff6666", "textAlign": "center", "lineHeight": "60px"}}>
+                Reset Password
+                </div>
+                <div style={{"backgroundColor": "white"}}>
+                    <form style={styles.formStyle}>
+                        <input value={this.props.username} onChange={(event) => this.props.onChangeUsername(event)} style={styles.text_input_style} placeholder="Username"/>
+                        <br/>
+                        <Button onClick={() => this.props.onResetPassword(this.props.username)} onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.resetButtonStyle}  bsSize="large" block>Submit</Button>
+                    </form>
+                </div>
+            </div>
+            <div style={this.alertDivStyle}>
+                <Alert bsStyle={"danger"} style={this.props.alertStyle}>
+                    <strong>{this.props.status}</strong>
+                </Alert>
             </div>
         </div>
         )

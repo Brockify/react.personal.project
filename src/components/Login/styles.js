@@ -16,12 +16,21 @@
     alert_style: {
         "display": "block",
         "animation": "fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s",
-        "bottom": "40px"    
+        "backgroundColor": "#00b8e6",
+        "color": "white",    
+        "width": "50%",
+        "margin": "0 auto",
+        "marginBottom": "20px",        
     },
     alert_style_small: {
         "display": "block",
         "animation": "fadeinSnackbar 0.5s, fadeoutSnackbar 0.5s 2.5s",
-        "bottom": "0px"    
+        "bottom": "0px" ,
+        "width": "50%",
+        "color": "white",
+        "backgroundColor": "#00b8e6",
+        "margin": "0 auto",
+        "marginBottom": "20px", 
     },
     alert_hide: {
         "display": "none",
@@ -34,7 +43,7 @@
         "paddingLeft": "6%",
         "paddingRight": "6%",
         "marginTop": "30px"
-    },
+        },
     text_input_style: {
         "borderRadius": "6px", 
         "border": "1px solid grey", 
@@ -46,22 +55,22 @@
     },
     login_button_style: {
         "marginTop": "5px", 
-        "height": "40px", 
-        "backgroundColor": "white", 
-        "color": "black"
+        "height": "40px",
+        "backgroundColor": "#00b8e6", 
+        "color": "#f2f2f2",
     },
     login_button_style_hover: {
         "marginTop": "5px", 
         "height": "40px", 
-        "backgroundColor": "green", 
-        "color": "white"
+        "backgroundColor": "rgba(0, 184, 230, 0.8)", 
+        "color": "rgba(242, 242, 242, 0.93)"
     },
     alert_div: {
         "textAlign": "center", 
         "bottom": "40px",
         "position": "fixed",
         "width": "100%",
-        "zIndex": "999",  
+        "zIndex": "999",
     },
     alert_div_small: {
         "textAlign": "center", 

@@ -11,8 +11,9 @@ import logger from 'redux-logger'
 
 //Components
 import Login from './components/Login/Login'
-import Register from './components/Register'
-import Dashboard from './components/Dashboard'
+import Register from './components/Register/Register'
+import Dashboard from './components/Dashboard/Dashboard'
+import Search from './components/Search/Search'
 
 //Reducers
 import reducer from './reducers/index'
@@ -55,7 +56,10 @@ const DashboardComponenet = (props) => {
       logout={() => store.dispatch({type: "LOGOUT"})}
       logged_in={store.getState().login.logged_in}
       setLogin={(username) => store.dispatch({type: "SET_LOGIN", data: {"username": username}})}
+      showSearchModal={() => store.dispatch({type: "SHOW_SEARCH_MODAL"})}
+      hideSearchModal={() => store.dispatch({type: "HIDE_SEARCH_MODAL"})}
       store={store}
+      search={store.getState().dashboard.search}
       value={"Dashboard"}
     />
   );
@@ -75,6 +79,10 @@ const RegisterComponent = (props) => {
         onChangePassword={(event) => store.dispatch({type: "CHANGE_PASSWORD_REGISTER", data: {"password": event.target.value}})}
         onChangeEmail={(event) => store.dispatch({type: "CHANGE_EMAIL_REGISTER", data: {"email": event.target.value}})}
         resetMessage={() => store.dispatch({type: "RESET_MESSAGE_REGISTER", data: {"message": ""}})}
+        alertStyle={store.getState().register.alertStyle}
+        hideAlert={(alertStyle) => store.dispatch({type: "HIDE_ALERT_REGISTER", data: {"alertStyle": alertStyle}})}
+        showAlert={(alertStyle) => store.dispatch({type: "SHOW_ALERT_REGISTER", data: {"alertStyle": alertStyle}})}
+        register={store.getState().register.register}
       />
   );
 }
@@ -88,6 +96,16 @@ const ForgotPasswordComponent = (props) => {
       onChangeUsername={(event) => store.dispatch({type: "CHANGE_USERNAME_RESET", data: {"username": event.target.value}})}
       resetMessage={() => store.dispatch({type: "RESET_PASSWORD_RESET"})}
       resetPassword={store.getState().reset_password.resetPassword}
+      alertStyle={store.getState().reset_password.alertStyle}
+      hideAlert={(alertStyle) => store.dispatch({type: "HIDE_ALERT_PASSWORD_RESET", data: {"alertStyle": alertStyle}})}
+      showAlert={(alertStyle) => store.dispatch({type: "SHOW_ALERT_PASSWORD_RESET", data: {"alertStyle": alertStyle}})}
+    />);
+}
+
+const SearchComponent = (props) => {
+  return (
+    <Search
+      hideSearchModal={() => store.dispatch({type: "HIDE_SEARCH_MODAL"})}
     />);
 }
 
@@ -99,6 +117,7 @@ const render = () =>
       <Route path="/dashboard" component={DashboardComponenet}/>
       <Route path="/register" component={RegisterComponent}/>
       <Route path="/forgot_pass" component={ForgotPasswordComponent}/>
+      <Route path="/search" component={SearchComponent}/>
     </div>
   </Router>,
   rootEl)
