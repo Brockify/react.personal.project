@@ -69,9 +69,9 @@ class Login extends Component {
                 <br/>
                 <Button onMouseOut={() => this.setState({buttonHover: false})} onMouseEnter={() => this.setState({buttonHover: true})} style={this.loginButtonStyle} onClick={() => {this.props.onLogin(this.props.username, this.props.password)}} bsSize="large" block>Login</Button>
                 <br/>
-                <input className="loginSubButtons" value="Need an account?" type="button" onClick={() => this.setState({register: true})}/>
+                <input className="loginSubButtons" onChange={() => {}} value="Need an account?" type="button" onClick={() => this.setState({register: true})}/>
                 <br/>
-                <input className="loginSubButtons" onClick={() => this.setState({forgotpass: true})} value="Forgot password?"/>
+                <input className="loginSubButtons" onChange={() => {}} onClick={() => this.setState({forgotpass: true})} value="Forgot password?"/>
                 </form>
             </div>
           </div>

@@ -12,9 +12,10 @@ class Search extends Component {
       var comics = []
       if(this.props.comicData != null && this.props.comicData.results != null && this.props.comicData.results.length > 0){
         comics = this.props.comicData.results.map((comic) =>
-            <div style={{"float": "left", "width": "31%", "height": "350px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "marginTop": "10px", "backgroundColor": "white", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "maxWidth": "200px"}}>
+            <div style={{"float": "left", "width": "33%", "height": "375px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "marginTop": "10px", "backgroundColor": "white", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "maxWidth": "200px"}}>
                 <h4 style={{"overflow": "hidden", "height": "20px"}}>{comic.title}</h4>
                 <img src={comic.thumbnail.path + '/portrait_xlarge.' + comic.thumbnail.extension} style={{"width": "90%", "margin": "0 auto","padding": "0px", "height": "250px", "marginTop": "20px"}}/>
+                <input type="button" value="Add" className="search_add_button" onClick={() => {this.props.addComic(this.props.username, comic)}}/>
             </div>
       )     
       }

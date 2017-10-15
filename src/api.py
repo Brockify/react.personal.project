@@ -1,12 +1,12 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS
-from flask import jsonify
 from flaskext.mysql import MySQL
 from random import randint
 from email.mime.text import MIMEText
 from validate_email import validate_email
 import smtplib
+import json
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
@@ -107,7 +107,7 @@ class HelloWorld(Resource):
             except Exception as e:
                 return jsonify({"message": jsonify(e)})
 
-    @app.route('/ResetUsername/<string:email>', methods=['POST', 'GET'])
+    @app.route('/ResetUsername/<string:email>', methods=['POST'])
     def ResetUsername(email):
         cur = mysql.get_db().cursor()
         cur.execute('''SELECT Username FROM Users where Email=%s''', (email))
@@ -134,6 +134,21 @@ class HelloWorld(Resource):
                 return jsonify({"message": "Username sent to your email."})
             except Exception as e:
                 return jsonify({"message": jsonify(e)})
+
+    @app.route('/AddComic/<string:username>', methods=['POST', 'GET'])
+    def AddComic(username):
+        comic = request.get_json()
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT quantity FROM Unread where Username=%s AND ID=%s''', (username, comic["id"]))
+        rv = cur.fetchone()
+        if(rv == None):
+            cur.execute('''INSERT INTO Unread VALUES (%s, %s, %s, %s)''', (username, json.dumps(comic), comic['id'], int(1)))
+            mysql.get_db().commit()
+            return jsonify({"message": "Added successfully!", "comic": comic})
+        else:
+            cur.execute('''UPDATE Unread set quantity=%s WHERE ID=%s AND Username=%s''', (rv[0]+1, comic['id'], username))
+            return jsonify({"message": "Added successfully!", "comic": comic})
+        return jsonify({"message": "Added successfully!", "comic": comic})    
 api.add_resource(HelloWorld, '/')
 
 if __name__ == '__main__':

@@ -20,8 +20,25 @@ let styles = {
         "backgroundColor": "black",
         "width": "100%",
         "animation": "modalExit .7s",
-        "animation-fill-mode": "forwards"
+        "animationFillMode": "forwards"
         
+    },
+     unread_div: {
+        "height": "300px", 
+        "backgroundColor": "white", 
+        "textAlign": "center", 
+        "lineHeight": "300px", 
+        "width": "100%", 
+        "overflow": "hidden",
+    }, 
+    unread_div_more: {
+        "height": "600px", 
+        "backgroundColor": "white", 
+        "textAlign": "center", 
+        "lineHeight": "300px", 
+        "width": "100%", 
+        "overflow": "hidden",
+        "animation": "show_more 1s"
     }
   }
 export default styles;
