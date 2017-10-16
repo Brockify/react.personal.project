@@ -26,22 +26,41 @@ class Dashboard extends Component {
     const nav_bar_style = {"backgroundColor":"#ff6666", height: "50px"}
     var unread_message = ""
     var listItems;
-
-    if(this.state.unread_more){
-      this.unread_style = styles.unread_div_more
-    } else {
-      this.unread_style = styles.unread_div      
-    }
-
     //Add items to list and create listview for unread
+    //if the user clicked 'show more'
+    if(this.state.unread_more){
+      //show 'Show less' if the comics are 10 or less in the unread
+      if(this.props.unread.length < 11){
+        this.state.unread_more_message = "Show less"
+      } else {
+        this.state.unread_more_message = "Show all"
+      }
+      //show animation and show 2 rows
+      this.unread_style = styles.unread_div_more      
+    } else {
+      //if the show more button is not clicked
+      //but if the message showed 'show less' (the window was opened by user)
+      if(this.state.unread_more_message === "Show less"){
+        //close it with animation and show 'Show more'
+        this.unread_style = styles.unread_div_less
+        this.state.unread_more_message = "Show more";
+      } else {
+        //if the window was never opened by the user, show it defaulted
+        this.unread_style = styles.unread_div              
+      }
+    }
     if(this.props.unread != null && this.props.unread.length == 0){
       unread_message = "No comic books added to library yet or there are no unread comics."      
     } else {
       unread_message = ""  
       listItems = this.props.unread.map((item) =>
         <div key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "backgroundColor": "white", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
-          <h4 style={{"margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "10%", "marginTop": "5px"}}>{item.title}</h4>
-          <img src={item.thumbnail.path + '/portrait_xlarge.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 75%", "verticalAlign": "baseline", "marginTop": "5px"}}/>
+          <h4 style={{"margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
+          <img src={item.thumbnail.path + '/portrait_xlarge.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 225px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
+          <div style={{"width": "90%", "margin": "0 auto"}}>
+            <input type="button" value="Read" style={{"float": "left", "backgroundColor": "green", "color": "white", "width": "50%"}}/>
+            <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item)}} value="Delete"  style={{"float": "left", "backgroundColor": "red", "color": "white", "width": "50%"}}/>
+          </div>
         </div>
       )     
     }
@@ -97,7 +116,7 @@ class Dashboard extends Component {
             {unread_message}
             {listItems}
           </div>
-          <div onClick={() => this.setState({"unread_more": true, "unread_more_message": "Show all"})} style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
+          <div onClick={() => {if(this.state.unread_more_message === "Show less"){this.setState({"unread_more": false})}else{this.setState({"unread_more": true, "unread_more_message": "Show all"})}}} style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
             {this.state.unread_more_message}
           </div>
           <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>

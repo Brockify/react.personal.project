@@ -27,7 +27,6 @@ let styles = {
         "height": "300px", 
         "backgroundColor": "white", 
         "textAlign": "center", 
-        "lineHeight": "300px", 
         "width": "100%", 
         "overflow": "hidden",
     }, 
@@ -35,10 +34,17 @@ let styles = {
         "height": "600px", 
         "backgroundColor": "white", 
         "textAlign": "center", 
-        "lineHeight": "300px", 
         "width": "100%", 
         "overflow": "hidden",
         "animation": "show_more 1s"
+    },
+    unread_div_less: {
+        "height": "300px", 
+        "backgroundColor": "white", 
+        "textAlign": "center", 
+        "width": "100%", 
+        "overflow": "hidden",
+        "animation": "show_less 1s"
     }
   }
 export default styles;

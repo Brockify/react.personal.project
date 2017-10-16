@@ -149,6 +149,13 @@ class HelloWorld(Resource):
             cur.execute('''UPDATE Unread set quantity=%s WHERE ID=%s AND Username=%s''', (rv[0]+1, comic['id'], username))
             return jsonify({"message": "Added successfully!", "comic": comic})
         return jsonify({"message": "Added successfully!", "comic": comic})    
+
+    @app.route('/DeleteComicUnread/<string:username>/<int:comic_id>', methods=['POST', 'GET'])
+    def DeleteComicUnread(username, comic_id):
+        cur = mysql.get_db().cursor()
+        cur.execute('''DELETE FROM Unread WHERE Username=%s AND ID=%s''', (username, comic_id))
+        mysql.get_db().commit()
+        return jsonify({"message": "Deleted successfully!", "id": comic_id})    
 api.add_resource(HelloWorld, '/')
 
 if __name__ == '__main__':

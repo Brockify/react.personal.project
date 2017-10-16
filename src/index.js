@@ -26,6 +26,8 @@ import resetPasswordSaga from './sagas/ResetPasswordSaga'
 import resetUsernameSaga from './sagas/ResetUsernameSaga'
 import searchSaga from './sagas/SearchSaga'
 import addComicSaga from './sagas/AddComicSaga'
+import deleteComicSaga from './sagas/DeleteComicSaga'
+
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reducer, applyMiddleware(logger, sagaMiddleware))
@@ -68,6 +70,7 @@ const DashboardComponenet = (props) => {
       addComic={(username, comic) => store.dispatch({type: "ADD_COMIC", data: {"username": username, "comic": comic}})}
       value={"Dashboard"}
       username={store.getState().login.username}
+      deleteComic={(username, comic) => {store.dispatch({type: "DELETE_COMIC", data: {"username": username, "comic": comic}})}}
     />
   );
 }
@@ -138,6 +141,7 @@ sagaMiddleware.run(resetPasswordSaga)
 sagaMiddleware.run(resetUsernameSaga)
 sagaMiddleware.run(searchSaga)
 sagaMiddleware.run(addComicSaga)
+sagaMiddleware.run(deleteComicSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
   store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser)}})
