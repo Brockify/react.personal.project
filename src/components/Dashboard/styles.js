@@ -45,6 +45,13 @@ let styles = {
         "width": "100%", 
         "overflow": "hidden",
         "animation": "show_less 1s"
+    }, 
+    read_div: {
+        "height": "300px", 
+        "backgroundColor": "white", 
+        "textAlign": "center", 
+        "width": "100%", 
+        "overflow": "hidden",
     }
   }
 export default styles;

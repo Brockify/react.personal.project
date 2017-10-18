@@ -14,6 +14,7 @@ import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import Dashboard from './components/Dashboard/Dashboard'
 import Search from './components/Search/Search'
+import Unread from './components/Unread/Unread'
 
 //Reducers
 import reducer from './reducers/index'
@@ -27,6 +28,8 @@ import resetUsernameSaga from './sagas/ResetUsernameSaga'
 import searchSaga from './sagas/SearchSaga'
 import addComicSaga from './sagas/AddComicSaga'
 import deleteComicSaga from './sagas/DeleteComicSaga'
+import switchComicToReadSaga from './sagas/SwitchComicToReadSaga'
+import switchReadToUnreadSaga from './sagas/SwitchReadToUnreadSaga'
 
 
 const sagaMiddleware = createSagaMiddleware()
@@ -54,6 +57,15 @@ const LoginComponent = (props) => {
   );
 }
 
+const UnreadComponent = (props) => {
+  return (
+    <Unread
+      unread={store.getState().dashboard.unread}
+      deleteComic={(username, comic) => {store.dispatch({type: "DELETE_COMIC", data: {"username": username, "comic": comic}})}}      
+    />
+  );
+}
+
 //component to pass to the router with props included 'needed'
 const DashboardComponenet = (props) => {
   return (
@@ -70,6 +82,9 @@ const DashboardComponenet = (props) => {
       addComic={(username, comic) => store.dispatch({type: "ADD_COMIC", data: {"username": username, "comic": comic}})}
       value={"Dashboard"}
       username={store.getState().login.username}
+      read={store.getState().dashboard.read}
+      switchToRead={(username, id) => store.dispatch({type: "SWITCH_TO_READ", data: {"username": username, "id": id}})}
+      switchToUnread={(username, id) => store.dispatch({type: "SWITCH_READ_TO_UNREAD", data: {"username": username, "id": id}})}
       deleteComic={(username, comic) => {store.dispatch({type: "DELETE_COMIC", data: {"username": username, "comic": comic}})}}
     />
   );
@@ -128,6 +143,7 @@ const render = () =>
       <Route path="/register" component={RegisterComponent}/>
       <Route path="/forgot_pass" component={ForgotPasswordComponent}/>
       <Route path="/search" component={SearchComponent}/>
+      <Route path="/unread" component={UnreadComponent}/>
     </div>
   </Router>,
   rootEl)
@@ -142,6 +158,8 @@ sagaMiddleware.run(resetUsernameSaga)
 sagaMiddleware.run(searchSaga)
 sagaMiddleware.run(addComicSaga)
 sagaMiddleware.run(deleteComicSaga)
+sagaMiddleware.run(switchComicToReadSaga)
+sagaMiddleware.run(switchReadToUnreadSaga)
 const cachedUser = localStorage.getItem("user");
 if (JSON.parse(cachedUser) != null) {
   store.dispatch({type: "SET_LOGIN", data: {"username": JSON.parse(cachedUser)}})

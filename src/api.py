@@ -33,7 +33,9 @@ class HelloWorld(Resource):
             if(rv[0] == password):
                 cur.execute('''SELECT data FROM Unread WHERE username=%s''', (username))
                 unread = cur.fetchall()
-                return jsonify({"message": "Login success!", "username": rv[1], "unread": unread})
+                cur.execute('''SELECT data FROM `Read` WHERE username=%s''', (username))
+                read = cur.fetchall()
+                return jsonify({"message": "Login success!", "username": rv[1], "unread": unread, "read": read})
             else:
                 return jsonify({"message": "Password is wrong. Please try again."})
         else:
@@ -148,7 +150,37 @@ class HelloWorld(Resource):
         else:
             cur.execute('''UPDATE Unread set quantity=%s WHERE ID=%s AND Username=%s''', (rv[0]+1, comic['id'], username))
             return jsonify({"message": "Added successfully!", "comic": comic})
-        return jsonify({"message": "Added successfully!", "comic": comic})    
+        return jsonify({"message": "Added successfully!", "comic": comic})   
+
+    @app.route('/SwitchToRead/<string:username>/<string:id>', methods=['POST', 'GET'])
+    def SwitchToRead(username, id):
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT * FROM Unread WHERE username=%s AND id=%s''', (username, id))
+        rv = cur.fetchone()
+        json_rv = json.loads(rv[1])
+        if(rv == None):
+            return jsonify({"message": "Switch to unread unsuccessfull. Try again!"})
+        else:
+            cur.execute('''INSERT INTO `Read` VALUES (%s, %s, %s, %s)''', (username, json.dumps(json_rv), json_rv['id'], rv[3]))
+            mysql.get_db().commit()
+            cur.execute('''DELETE FROM Unread WHERE username=%s AND id=%s''', (username, id))
+            mysql.get_db().commit()
+            return jsonify({"message": "Switched successfully!", "comic": json_rv})
+
+    @app.route('/SwitchReadToUnread/<string:username>/<string:id>', methods=['POST', 'GET'])
+    def SwitchReadToUnread(username, id):
+        cur = mysql.get_db().cursor()
+        cur.execute('''SELECT * FROM `Read` WHERE username=%s AND id=%s''', (username, id))
+        rv = cur.fetchone()
+        json_rv = json.loads(rv[1])
+        if(rv == None):
+            return jsonify({"message": "Switch to read unsuccessfull. Try again!"})
+        else:
+            cur.execute('''INSERT INTO Unread VALUES (%s, %s, %s, %s)''', (username, json.dumps(json_rv), json_rv['id'], rv[3]))
+            mysql.get_db().commit()
+            cur.execute('''DELETE FROM `Read` WHERE username=%s AND id=%s''', (username, id))
+            mysql.get_db().commit()
+            return jsonify({"message": "Switched successfully!", "comic": json_rv})
 
     @app.route('/DeleteComicUnread/<string:username>/<int:comic_id>', methods=['POST', 'GET'])
     def DeleteComicUnread(username, comic_id):

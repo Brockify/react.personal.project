@@ -11,7 +11,10 @@ function* login(action) {
         for(var i = 0; i < response.unread.length; i++){
           response.unread[i] = JSON.parse(response.unread[i]);
         }
-        yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "unread": response.unread, "username": response.username}});                      
+        for(var i = 0; i < response.read.length; i++){
+          response.read[i] = JSON.parse(response.read[i]);
+        }
+        yield put({type: "LOGIN_SUCCESSFUL", data: {'message': response.message, "unread": response.unread, "username": response.username, "read": response.read}});                      
       }
    } catch (e) {
      console.log(e);
