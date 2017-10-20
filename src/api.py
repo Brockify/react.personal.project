@@ -182,10 +182,13 @@ class HelloWorld(Resource):
             mysql.get_db().commit()
             return jsonify({"message": "Switched successfully!", "comic": json_rv})
 
-    @app.route('/DeleteComicUnread/<string:username>/<int:comic_id>', methods=['POST', 'GET'])
-    def DeleteComicUnread(username, comic_id):
+    @app.route('/DeleteComic/<string:username>/<int:comic_id>/<string:comic_type>', methods=['POST', 'GET'])
+    def DeleteComic(username, comic_id, comic_type):
         cur = mysql.get_db().cursor()
-        cur.execute('''DELETE FROM Unread WHERE Username=%s AND ID=%s''', (username, comic_id))
+        if comic_type == "Unread":
+            cur.execute('''DELETE FROM Unread WHERE Username=%s AND ID=%s''', (username, comic_id))
+        else:
+            cur.execute('''DELETE FROM `Read` WHERE Username=%s AND ID=%s''', (username, comic_id))
         mysql.get_db().commit()
         return jsonify({"message": "Deleted successfully!", "id": comic_id})    
 api.add_resource(HelloWorld, '/')

@@ -83,9 +83,10 @@ const DashboardComponenet = (props) => {
       value={"Dashboard"}
       username={store.getState().login.username}
       read={store.getState().dashboard.read}
+      library={store.getState().dashboard.library}
       switchToRead={(username, id) => store.dispatch({type: "SWITCH_TO_READ", data: {"username": username, "id": id}})}
       switchToUnread={(username, id) => store.dispatch({type: "SWITCH_READ_TO_UNREAD", data: {"username": username, "id": id}})}
-      deleteComic={(username, comic) => {store.dispatch({type: "DELETE_COMIC", data: {"username": username, "comic": comic}})}}
+      deleteComic={(username, comic, type) => {store.dispatch({type: "DELETE_COMIC", data: {"username": username, "comic": comic, "comic_type": type}})}}
     />
   );
 }

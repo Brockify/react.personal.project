@@ -12,10 +12,12 @@ class Dashboard extends Component {
   searchStyle = styles.modal;
   lastSearch = false
   unread_style = "";
+  read_style = ""  
   modal = null;
+  modal_style = "";
   constructor(props){
     super(props)
-    this.state = {"unread_nav": false, "unread_more": false, "unread_more_message": "Show more",  modal_state: "none", modal_comic: {thumbnail: ""}}
+    this.state = {"modal_open": false, "unread_nav": false,"read_nav": false,  "read_more": false, "read_more_message": "Show more", "unread_more": false, "unread_more_message": "Show more",  modal_state: "none", modal_comic: {thumbnail: ""}}
     var cachedUser = JSON.parse(localStorage.getItem("user"));
     if(cachedUser != null){
       this.props.setDashboard({"unread": cachedUser.unread, "read": cachedUser.read});
@@ -28,6 +30,8 @@ class Dashboard extends Component {
     const nav_bar_style = {"backgroundColor":"#ff6666", height: "50px"}
     var unread_message = ""
     var read_message = ""
+    var library_message = ""
+    var libraryListItems;
     var listItems;
     var readListItems;
     //Add items to list and create listview for unread
@@ -53,6 +57,34 @@ class Dashboard extends Component {
         this.unread_style = styles.unread_div              
       }
     }
+
+    if(this.state.modal_open){
+      this.modal_style = styles.comic_modal_open
+    } else {
+      this.modal_style = styles.comic_modal_close
+    }
+
+    if(this.state.read_more){
+      //show 'Show less' if the comics are 10 or less in the unread
+      if(this.props.read.length < 11){
+        this.state.read_more_message = "Show less"
+      } else {
+        this.state.read_more_message = "Show all"
+      }
+      //show animation and show 2 rows
+      this.read_style = styles.read_div_more      
+    } else {
+      //if the show more button is not clicked
+      //but if the message showed 'show less' (the window was opened by user)
+      if(this.state.read_more_message === "Show less"){
+        //close it with animation and show 'Show more'
+        this.read_style = styles.read_div_less
+        this.state.read_more_message = "Show more";
+      } else {
+        //if the window was never opened by the user, show it defaulted
+        this.read_style = styles.read_div              
+      }
+    }
     if(this.props.unread != null && this.props.unread.length == 0){
       unread_message = "No comic books added to library yet or there are no unread comics."      
     } else {
@@ -60,11 +92,23 @@ class Dashboard extends Component {
       listItems = this.props.unread.map((item) =>
         <div key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "backgroundColor": "white", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
           <h4 style={{"fontSize": "14px", "margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
-          <img onClick={() => {this.setState({"modal_state": "block", "modal_comic": item})}} src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 225px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
+          <img onClick={() => {this.setState({"modal_state": "block", "modal_comic": item, "modal_open": true})}} src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 225px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
           <div style={{"width": "90%", "margin": "0 auto"}}>
             <input onClick={() => {this.props.switchToRead(this.props.username, item.id)}} type="button" value="Read" style={{"float": "left", "backgroundColor": "green", "color": "white", "width": "50%"}}/>
-            <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item)}} value="Delete"  style={{"float": "left", "backgroundColor": "red", "color": "white", "width": "50%"}}/>
+            <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item, "Unread")}} value="Delete"  style={{"float": "left", "backgroundColor": "red", "color": "white", "width": "50%"}}/>
           </div>
+        </div>
+      )     
+    }
+
+    if(this.props.library != null && this.props.library.length == 0){
+      library_message = "No comic books added to library yet."      
+    } else {
+      library_message = ""  
+      libraryListItems = this.props.library.map((item) =>
+        <div key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "backgroundColor": "white", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
+          <h4 style={{"fontSize": "14px", "margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
+          <img onClick={() => {this.setState({"modal_state": "block", "modal_comic": item, "modal_open": true})}} src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 250px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
         </div>
       )     
     }
@@ -77,10 +121,10 @@ class Dashboard extends Component {
       readListItems = this.props.read.map((item) =>
         <div key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "backgroundColor": "white", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
           <h4 style={{"fontSize": "14px", "margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
-          <img onClick={() => {this.setState({"modal_state": "block", "modal_comic": item})}} src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 225px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
+          <img onClick={() => {this.setState({"modal_state": "block", "modal_comic": item, "modal_open": true})}} src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 225px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
           <div style={{"width": "90%", "margin": "0 auto"}}>
             <input onClick={() => {this.props.switchToUnread(this.props.username, item.id)}} type="button" value="Unread" style={{"float": "left", "backgroundColor": "green", "color": "white", "width": "50%"}}/>
-            <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item)}} value="Delete"  style={{"float": "left", "backgroundColor": "red", "color": "white", "width": "50%"}}/>
+            <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item, "Read")}} value="Delete"  style={{"float": "left", "backgroundColor": "red", "color": "white", "width": "50%"}}/>
           </div>
         </div>
       )     
@@ -124,20 +168,22 @@ class Dashboard extends Component {
           </div>
           <div style={{"float": "left", "width": "90%", "height": "35px", "marginTop": "8px", "paddingRight": "5%"}}>
             <input onClick={() => this.props.logout()} className="dashboard_nav_button_logout" type="button" value="Logout"/>
-             <input onClick={() => this.props.showSearchModal()} className="dashboard_nav_button_logout" type="button" value="+ Add Comic"/>
+            <input onClick={() => this.props.showSearchModal()} className="dashboard_nav_button_logout" type="button" value="+ Add Comic"/>
           </div>
         </div>
         <div>
           <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>
-            My Library
+            My Library {this.props.library.length}
           </div>
-          <div style={{"height": "150px", "backgroundColor": "white"}}>
+          <div style={styles.library_div}>
+          {library_message}
+          {libraryListItems}
           </div>
           <div style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
             More
           </div>
           <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>
-            Unread
+            Unread {this.props.unread.length}
           </div>
           <div style={this.unread_style}>
             {unread_message}
@@ -147,22 +193,22 @@ class Dashboard extends Component {
             {this.state.unread_more_message}
           </div>
           <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>
-            Read
+            Read {this.props.read.length}
           </div>
-          <div style={styles.read_div}>
+          <div style={this.read_style}>
             {read_message}
             {readListItems}
           </div>
-          <div style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
-            More
+          <div onClick={() => {if(this.state.read_more_message === "Show less"){this.setState({"read_more": false})}else if(this.state.read_more_message === "Show all"){this.setState({"read_nav": true})}else{this.setState({"read_more": true, "read_more_message": "Show all"})}}} style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
+            {this.state.read_more_message}
           </div>
         </div>
-        <div onClick={() => this.setState({"modal_state": "none"})} className="modal" style={{"display": this.state.modal_state, "overflow": "auto", "backgroundColor": "rgba(169,169,169,.6)", "animation": "fadeInModal 1s"}} id="comicModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div onClick={() => this.setState({"modal_state": "none", "modal_open": false})} className="modal" style={this.modal_style} id="comicModal" tabindex="-1" role="dialog" aria-hidden="true">
           <div className="modal-dialog" role="document" style={{"opacity": "1"}}>  
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" style={{"margin": "0 auto"}} id="exampleModalLabel">{this.state.modal_comic.title}</h5>
-                <button type="button" className="close" onClick={() => this.setState({"modal_state": "none"})} aria-label="Close">
+                <button type="button" className="close" onClick={() => this.setState({"modal_state": "none", "modal_open": false})} aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
