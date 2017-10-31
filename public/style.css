@@ -23,6 +23,26 @@
   100% {opacity: 0}
 }
 
+@keyframes fadeInComicButtons{
+  0% {opacity: 0}
+  100% {opacity: 1}
+}
+
+@keyframes fadeOutComicButtons{
+  0% {opacity: 1}
+  100% {opacity: 0}
+}
+
+@keyframes fadeInComics{
+  0% {opacity: 0}
+  100% {opacity: .5}
+}
+
+@keyframes fadeOutComics{
+  0% {opacity: .5}
+  100% {opacity: 0}
+}
+
 
 @keyframes moveInR {
   0% { transform: translate(90%, 0); }
@@ -55,8 +75,7 @@
      opacity: 1;
   }
   100% { 
-    transform: translate( 0%, 100%);
-    display: none;
+    transform: translate( 0%, -100%);
     opacity: 0;
   }
 }
@@ -158,5 +177,26 @@
   border: 1px solid white;
   border-radius: 8px;  
   margin-top: 5px;
+}
+
+.comic_container {
+  position: relative;
+  width: 100%;
+}
+
+.comic_middle {
+  transition: 1s ease;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(#ff6666, #00b8e6); ;
+  height: 300px;
+  opacity: 0;
+}
+
+.comic_middle:hover{
+  opacity: .5;
+  background-color: rgba(255, 102, 102);
 }
 
