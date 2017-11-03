@@ -21,11 +21,29 @@ class Dashboard extends Component {
   modal_comic = "";
   constructor(props){
     super(props)
-    this.state = {"modal_button_function": "", "comic_read_src": "", "modal_button_text": "", "last_comic_type": "", "last_comic_id": 0, "comic_middle_style": styles.comic_middle, "comic_middle_hover": false, "read_hover": false,"unread_hover": false, "library_hover": false,"comicButtonStyleID": 0, "comicButtonStyle": false, "modal_open": false, "unread_nav": false,"read_nav": false,  "read_more": false, "read_more_message": "Show More", "unread_more": false, "unread_more_message": "Show More",  modal_state: "", modal_comic: {thumbnail: ""}}
+    this.state = {"comic_modal_read_url": "", "comic_modal_read_button_display": {display: "none", width: "33%.3", read_width: "0%"}, "modal_button_function": "", "comic_read_src": "", "modal_button_text": "", "last_comic_type": "", "last_comic_id": 0, "comic_middle_style": styles.comic_middle, "comic_middle_hover": false, "read_hover": false,"unread_hover": false, "library_hover": false,"comicButtonStyleID": 0, "comicButtonStyle": false, "modal_open": false, "unread_nav": false,"read_nav": false,  "read_more": false, "read_more_message": "Show More", "unread_more": false, "unread_more_message": "Show More",  modal_state: "", modal_comic: {thumbnail: ""}}
     var cachedUser = JSON.parse(localStorage.getItem("user"));
     if(cachedUser != null){
       this.props.setDashboard({"unread": cachedUser.unread, "read": cachedUser.read});
     }
+  }
+
+  checkReadNow(){
+    var found = false;            
+    var url = "";
+    if(this.state.modal_comic != null && this.state.modal_comic.urls != null && this.state.modal_comic.urls.length > 0){
+      for(var j = 0; j < this.state.modal_comic.urls.length; j++){
+        if(this.state.modal_comic.urls[j].type == "reader"){
+          found = true;
+          this.state.comic_modal_read_url = 'https://read.marvel.com/#/book/' + this.state.modal_comic.digitalId
+        }
+      }
+      if(found){
+        this.state.comic_modal_read_button_display = {"display": "inline-block", "width": "25%", "read_width": "25%"};                  
+      } else {
+        this.state.comic_modal_read_button_display = {"display": "none", "width": "33.3%", "read_width": "0%"};          
+      }      
+    } 
   }
 
   render() {
@@ -63,32 +81,27 @@ class Dashboard extends Component {
         this.unread_style = styles.unread_div              
       }
     }
-    this.comic_image_src_global = this.state.comic_read_src; 
-    this.modal_comic = this.state.modal_comic
+    //just to check wheter the reader should be active or not
     if(this.state.comic_read_src === ""){
       this.comic_image_div = (props) => {
         return (
             <img src={this.state.modal_comic.thumbnail.path + '/portrait_uncanny.' + this.state.modal_comic.thumbnail.extension} style={{"objectFit": "fill", "verticalAlign": "baseline", "marginTop": "5px"}}/>
         )};
     } else { 
-          
+      this.comic_image_src_global = this.state.comic_read_src; 
+      this.modal_comic = this.state.modal_comic
       this.comic_image_div = (props) => {
-        var url = "";
-        for(var j = 0; j < this.comic_image_src_global.length; j++){
-          console.log(this.comic_image_src_global[j]);
-          if(this.comic_image_src_global[j].type == "reader"){
-            url = 'https://read.marvel.com/#/book/' + this.modal_comic.digitalId
-          }
-        }        
         return (
-            <iframe src={url} style={{"border" :"none", "width": "100%", "height": "500px"}}></iframe>
+            <iframe src={this.state.comic_modal_read_url} style={{"border" :"none", "width": "100%", "height": "500px"}}></iframe>
         )};
     }
 
     //modal for when an item is clicked checks
     if(this.state.modal_open){
+      this.checkReadNow();
       this.modal_style = styles.comic_modal_open
     } else {
+      this.checkReadNow();      
       if(this.state.modal_state == "none"){
          this.modal_style = styles.comic_modal_close
       } else {
@@ -97,11 +110,11 @@ class Dashboard extends Component {
     }
 
     if(this.state.last_comic_type == "unread"){
-      this.state.modal_button_text = "Read"
+      this.state.modal_button_text = "Switch"
       this.state.modal_button_function = function(props, username, id){props.switchToRead(username, id)}
     } else if(this.state.last_comic_type == "read") {
       this.state.modal_button_function = function(props, username, id){props.switchToUnread(username, id)}      
-      this.state.modal_button_text = "Unread"
+      this.state.modal_button_text = "Switch"
     } else {
       this.state.modal_button_function = function(username, id){};
     }
@@ -309,16 +322,30 @@ class Dashboard extends Component {
                   </p>
                 </div>
                 </div>
-                <div style={{"border": "1px solid black", "marginBottom": "10px", "marginTop": "10px"}}>
-                <h4 style={{"height": "30px", "lineHeight": "40px"}}>Actions</h4>
-                <div style={{"padding": "5px"}}>
-                  <Button onClick={() => {
-                    this.setState({"modal_state": "none", "modal_open": false})
-                    this.state.modal_button_function(this.props, this.props.username, this.state.modal_comic.id)}} style={{"backgroundColor": "#7CB27C", "color": "white"}}>{this.state.modal_button_text}</Button>
-                  <Button onClick={() => {this.setState({"modal_state": "none", "modal_open": false})>
-                    this.props.deleteComic(this.props.username, this.state.modal_comic, this.state.last_comic_type[0].toUpperCase() + this.state.last_comic_type.slice(1))}} style={{"marginLeft": "5px", "backgroundColor": "#ff6666", "color": "white"}}>Delete</Button>
-                  <Button onClick={() => this.setState({"comic_read_src": this.state.modal_comic.urls})} style={{"marginLeft": "5px", "backgroundColor": "#00b8e6", "color": "white"}}>View on Marvel</Button>
-                </div>
+                <div style={{"border": "1px solid black", "marginBottom": "10px", "marginTop": "10px", "height": "100px"}}>
+                <h4 style={{"height": "30px", "lineHeight": "30px"}}>Actions</h4>
+                  <div style={{"width": "100%", "margin": "0 auto"}}>
+                    <div style={{"width":"100%", "margin": "0 auto"}}>
+                      <div style={{"float": "left", "width": this.state.comic_modal_read_button_display.width}}>
+                        <Button onClick={() => {
+                        this.setState({"modal_state": "none", "modal_open": false})
+                        this.state.modal_button_function(this.props, this.props.username, this.state.modal_comic.id)}} style={{"width": "80px", "backgroundColor": "#7CB27C", "color": "white", "margin": "0 auto"}}>{this.state.modal_button_text}</Button>
+                      </div>
+                      <div style={{"float": "left", "width": this.state.comic_modal_read_button_display.width}}>
+                        <Button onClick={() => {this.setState({"modal_state": "none", "modal_open": false})>
+                        this.props.deleteComic(this.props.username, this.state.modal_comic, this.state.last_comic_type[0].toUpperCase() + this.state.last_comic_type.slice(1))}} style={{"width": "80px", "margin": "0 auto", "backgroundColor": "#ff6666", "color": "white"}}>Delete</Button>
+                      </div>
+                      <div style={{"float": "left", "width": this.state.comic_modal_read_button_display.width}}>
+                      <Button onClick={() => {
+                        var win = window.open(this.state.modal_comic.urls[0].url, '_blank');   
+                        win.focus();                 
+                        }} style={{"width": "80px", "margin": "0 auto", "backgroundColor": "#00b8e6", "color": "white"}}>Details</Button>
+                      </div>
+                      <div style={{"float": "left", "width": this.state.comic_modal_read_button_display.read_width}}>
+                        <Button onClick={() => this.setState({"comic_read_src": this.state.modal_comic.urls})} style={{"width": "80px", "margin": "0 auto", "backgroundColor": "#00b8e6", "color": "white", "display": this.state.comic_modal_read_button_display.display}}>Read</Button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

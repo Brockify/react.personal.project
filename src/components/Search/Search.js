@@ -7,7 +7,7 @@ import styles from './styles'
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.state = {"load_more_visible": "none"}
+    this.state = {"option_display": {"opacity": "0", "animation": "none", "zIndex": "-1", "height": "0px"}, "load_more_visible": "none"}
   }
   render() {
       var comics = []
@@ -31,12 +31,17 @@ class Search extends Component {
       return (
         <div style={styles.overall}>
             <div style={styles.nav_bar}>
-                <div style={{"width": "70%", "height": "50px","float": "left", "marginTop": "7.5px"}}>
+                <div style={{"width": "71.5%", "height": "50px","float": "left", "marginTop": "7.5px"}}>
                     <input onChange={this.props.searchComic.bind(this)} placeholder="Search for comic..." style={{"textAlign": "center", "height": "35px", "float": "right", "width": "60%", "borderRadius": "8px", "border": "none"}} />
                 </div>
-                <div style={{"width": "30%", "height": "50px", "float": "left", "marginTop": "7.5px", "paddingRight": "7%"}}>
+                <div style={{"width": "10%", "float": "left"}}>
+                    <input type="button" className="dashboard_nav_button_logout" style={{"marginTop": "7.5px"}} onClick={() => {if(this.state.option_display.display === "block"){this.setState({"option_display": {"animation": "slideOptionUp .5s", "zIndex": "-1", "opacity": "0", "height": "0px"}})} else {this.setState({"option_display": {"display": "block", "animation": "slideOptionDown .5s", "opacity": "1", "height": "60px"}})}}} value="options" />
+                </div>
+                <div style={{"width": "15%", "height": "50px", "float": "left", "marginTop": "7.5px", "paddingRight": "7%"}}>
                     <input style={{ "height": "35px", "float": "right", "textAlign": "center", "background": "none", "border": "none"}} value="X" type="button" onClick={() => this.props.hideSearchModal()}/>
                 </div>
+            </div>
+            <div style={{"backgroundColor":"white", "height": this.state.option_display.height, "opacity": this.state.option_display.opacity, "zIndex": this.state.option_display.zIndex, "width": "40%", "margin": "0 auto", "animation": this.state.option_display.animation}}>
             </div>
             <div style={{"width": "90%", "margin": "0 auto"}}>
                 {comics}
