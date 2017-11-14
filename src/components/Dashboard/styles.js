@@ -49,7 +49,7 @@ let styles = {
         "animation": "show_less 1s"
     }, 
     read_div: {
-        "height": "300px", 
+        "height": "300px",
         "backgroundColor": "white", 
         "textAlign": "center", 
         "width": "100%", 
@@ -73,6 +73,7 @@ let styles = {
     },
     library_div: {
         "height": "300px", 
+        "lineHeight": "300px",
         "backgroundColor": "white", 
         "textAlign": "center", 
         "width": "100%", 
@@ -169,6 +170,39 @@ let styles = {
         "height": "300px",
         "opacity": "0",
         "animation": "fadeOutComics .5s"        
+    }, nav_buttons: {
+        "color": "#fff",
+        "border": "none",
+        "fontSize": "14pt",
+        "backgroundColor": "#00B8E6",
+        "border": "1px solid white",
+        "float": "right",
+        "borderRadius": "8px",
+        "height": "35px",
+        "lineHeight":"30px"
+    },
+    nav_button_search: {
+        "color": "black",
+        "border": "none",
+        "fontSize": "14pt",
+        "marginRight": "10px",
+        "backgroundColor": "white",
+        "border": "1px solid white",
+        "float": "right",
+        "borderRadius": "8px",
+        "height": "35px",
+        "lineHeight":"30px"
+    }, nav_button_search_button: {
+        "color": "#fff",
+        "border": "none",
+        "fontSize": "14pt",
+        "backgroundColor": "#00B8E6",
+        "border": "1px solid white",
+        "float": "right",
+        "borderRadius": "8px",
+        "height": "35px",
+        "lineHeight":"30px",
+        "marginRight": "5px"
     }
   }
 export default styles;

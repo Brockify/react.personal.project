@@ -13,6 +13,36 @@
   to {margin-bottom: -40px; opacity: 0;}
 }
 
+@keyframes navToReadFromLibrary {
+  from {background-color:#3882b7} 
+  to {background-color: #929547}
+}
+
+@keyframes navToReadFromUnread {
+  from {background-color:#a33934} 
+  to {background-color: #929547}
+}
+
+@keyframes navToUnreadFromLibrary {
+  from {background-color:#3882b7} 
+  to {background-color: #a33934}
+}
+
+@keyframes navToUnreadFromRead {
+  from {background-color:#929547} 
+  to {background-color: #a33934}
+}
+
+@keyframes navToLibraryFromRead {
+  from {background-color:#929547} 
+  to {background-color: #3882b7}
+}
+
+@keyframes navToLibraryFromUnread{
+  from {background-color:#a33934} 
+  to {background-color: #3882b7}
+}
+
 @keyframes slideOptionDown {
   from {height: 0px; opacity: 0;}
   to {height: 60px;opacity: 1;}
@@ -90,15 +120,39 @@
   }
 }
 
+@keyframes navToReadFromLibraryBody {
+  from {background-color:rgba(56, 130, 183, .2)} 
+  to {background-color: rgba(146, 149, 71, .2)}
+}
 
-.one{
-  padding-top: 100px;
-  background-color: #a6a6a6;
-  min-height: 92vh
+@keyframes navToReadFromUnreadBody {
+  from {background-color:rgba(163, 57, 52, .2)} 
+  to {background-color: rgba(146, 149, 71, .2)}
+}
+
+@keyframes navToUnreadFromLibraryBody {
+  from {background-color:rgba(56, 130, 183, .2)} 
+  to {background-color: rgba(163, 57, 52, .2)}
+}
+
+@keyframes navToUnreadFromReadBody {
+  from {background-color:rgba(146, 149, 71, .2)} 
+  to {background-color: rgba(163, 57, 52, .2)}
+}
+
+@keyframes navToLibraryFromReadBody {
+  from {background-color:rgba(146, 149, 71, .2)} 
+  to {background-color: rgba(56, 130, 183, .2)}
+}
+
+@keyframes navToLibraryFromUnreadBody {
+  from {background-color:rgba(163, 57, 52, .2)} 
+  to {background-color: rgba(56, 130, 183, .2)}
 }
 
 
-.one_nav{
+.one{
+  padding-top: 100px;
   background-color: #a6a6a6;
   min-height: 92vh
 }
@@ -208,5 +262,94 @@
 .comic_middle:hover{
   opacity: .5;
   background-color: rgba(255, 102, 102);
+}
+
+.unread_nav_unclicked{
+  color: #a8a8a8;
+  background-color: #7e2b26;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.unread_nav_unclicked:hover{
+  color: white;
+  background-color: #a33934;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+.unread_nav_clicked{
+  color: white;
+  background-color: #a33934;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.read_nav_unclicked{
+  color: #a8a8a8;
+  background-color: #405027;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.read_nav_unclicked:hover{
+  color: white;
+  background-color: #929547;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.read_nav_clicked{
+  color: white;
+  background-color: #929547;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.library_nav_unclicked{
+  color: #a8a8a8;
+  background-color: #356995;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.library_nav_unclicked:hover{
+  color: white;
+  background-color: #3882b7;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
+}
+
+.library_nav_clicked{
+  color: white;
+  background-color: #3882b7;
+  border-top : 1px solid white;
+  border-bottom : 1px solid white;
+  border-right: 1px solid white;
+  width: 33.3%;
+  float: left;
 }
 

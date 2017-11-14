@@ -81,12 +81,14 @@ const DashboardComponenet = (props) => {
       setDashboard={(comicData)=> store.dispatch({type: "SET_DASHBOARD", data: comicData})}
       addComic={(username, comic) => store.dispatch({type: "ADD_COMIC", data: {"username": username, "comic": comic}})}
       value={"Dashboard"}
+      comicData={store.getState().search.comicData}
       username={store.getState().login.username}
       read={store.getState().dashboard.read}
       library={store.getState().dashboard.library}
       switchToRead={(username, id) => store.dispatch({type: "SWITCH_TO_READ", data: {"username": username, "id": id}})}
       switchToUnread={(username, id) => store.dispatch({type: "SWITCH_READ_TO_UNREAD", data: {"username": username, "id": id}})}
       deleteComic={(username, comic, type) => {store.dispatch({type: "DELETE_COMIC", data: {"username": username, "comic": comic, "comic_type": type}})}}
+      searchComic={(searchString, digitalOnly) => store.dispatch({"type": "SEARCH", data: {"searchString": searchString, "digitalOnly": digitalOnly}})}
     />
   );
 }

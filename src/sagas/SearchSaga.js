@@ -3,7 +3,7 @@ import { put, takeLatest } from 'redux-saga/effects'
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* search(action) {
    try {
-      var response = yield(getSearch(action.data.searchString));
+      var response = yield(getSearch(action.data.searchString, action.data.digitalOnly));
       if(response.data.count > 0){
         yield put({type: "SEARCH_SUCCESS", data: {'message': '', "comicData": response.data}});        
       } else {
@@ -15,12 +15,13 @@ function* search(action) {
    }
 }
 
-function getSearch(searchString){
+function getSearch(searchString, digitalOnly){
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Content-Type", "application/json");
     var myInit = { method: 'GET', headers: myHeaders, cache: 'default' };
-    var myRequest = new Request('https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=' + searchString + '&apikey=57fc4f7cf9b1254ad731992ab64b6aae');
+    console.log(digitalOnly)
+    var myRequest = new Request('https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=' + searchString + '&apikey=57fc4f7cf9b1254ad731992ab64b6aae&hasDigitalIssue='+digitalOnly);
     const response = fetch(myRequest).then((response) => {
       //check to make sure the response was successful
       if(response.status !== 200){

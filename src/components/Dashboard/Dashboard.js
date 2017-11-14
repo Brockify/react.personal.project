@@ -6,6 +6,9 @@ import { Redirect } from 'react-router';
 import ResetUsername from '../ResetUsername/ResetUsername'
 import ResetPassword from '../ResetPassword/ResetPassword'
 import Search from '../Search/Search'
+import Library from '../Library/Library'
+import Unread from '../Unread/Unread'
+import Read from '../Read/Read'
 import styles from './styles';
 import {Button} from 'react-bootstrap'
 import $ from 'jquery'
@@ -17,11 +20,18 @@ class Dashboard extends Component {
   modal = null;
   modal_style = "";
   comic_image_div = "";
+  navController = "";  
   comic_image_src_global = "";
   modal_comic = "";
+  state_global = ""
+  unread_nav_class = "unread_nav_unclicked"
+  read_nav_class = "read_nav_unclicked"
+  library_nav_class = "library_nav_clicked"  
+  nav_background_color = "#3882b7"
+  nav_animation = "none"
   constructor(props){
     super(props)
-    this.state = {"comic_modal_read_url": "", "comic_modal_read_button_display": {display: "none", width: "33%.3", read_width: "0%"}, "modal_button_function": "", "comic_read_src": "", "modal_button_text": "", "last_comic_type": "", "last_comic_id": 0, "comic_middle_style": styles.comic_middle, "comic_middle_hover": false, "read_hover": false,"unread_hover": false, "library_hover": false,"comicButtonStyleID": 0, "comicButtonStyle": false, "modal_open": false, "unread_nav": false,"read_nav": false,  "read_more": false, "read_more_message": "Show More", "unread_more": false, "unread_more_message": "Show More",  modal_state: "", modal_comic: {thumbnail: ""}}
+    this.state = {"nav_last_clicked": "", "nav_controller": "library", "comic_modal_read_url": "", "comic_modal_read_button_display": {display: "none", width: "33%.3", read_width: "0%"}, "modal_button_function": "", "comic_read_src": "", "modal_button_text": "", "last_comic_type": "", "last_comic_id": 0, "comic_middle_style": styles.comic_middle, "comic_middle_hover": false, "read_hover": false,"unread_hover": false, "library_hover": false, "modal_open": false, "unread_nav": false,"read_nav": false,  "read_more": false, "read_more_message": "Show More", "unread_more": false, "unread_more_message": "Show More",  modal_state: "", modal_comic: {thumbnail: ""}}
     var cachedUser = JSON.parse(localStorage.getItem("user"));
     if(cachedUser != null){
       this.props.setDashboard({"unread": cachedUser.unread, "read": cachedUser.read});
@@ -50,37 +60,7 @@ class Dashboard extends Component {
     //styles for navbar
     const link_style = {"paddingLeft": "10%", "width": "10%", "float": "left", "color": "#fff", "textDecoration": "none", "height": "50px", "lineHeight": "50px", "fontSize": "18pt"}
     const nav_item_style = {height: "50px", display: "inline", "marginLeft": "5%", "lineHeight": "50px"}
-    const nav_bar_style = {"backgroundColor":"#ff6666", height: "50px"}
-    var unread_message = ""
-    var read_message = ""
-    var library_message = ""
-    var libraryListItems;
-    var listItems;
-    var readListItems;
 
-    //Add items to list and create listview for unread
-    //if the user clicked 'show more'
-    if(this.state.unread_more){
-      //show 'Show less' if the comics are 10 or less in the unread
-      if(this.props.unread.length < 11){
-        this.state.unread_more_message = "Show less"
-      } else {
-        this.state.unread_more_message = "Show all"
-      }
-      //show animation and show 2 rows
-      this.unread_style = styles.unread_div_more      
-    } else {
-      //if the show more button is not clicked
-      //but if the message showed 'show less' (the window was opened by user)
-      if(this.state.unread_more_message === "Show less"){
-        //close it with animation and show 'Show more'
-        this.unread_style = styles.unread_div_less
-        this.state.unread_more_message = "Show More";
-      } else {
-        //if the window was never opened by the user, show it defaulted
-        this.unread_style = styles.unread_div              
-      }
-    }
     //just to check wheter the reader should be active or not
     if(this.state.comic_read_src === ""){
       this.comic_image_div = (props) => {
@@ -94,6 +74,9 @@ class Dashboard extends Component {
         return (
             <iframe src={this.state.comic_modal_read_url} style={{"border" :"none", "width": "100%", "height": "500px"}}></iframe>
         )};
+    }
+    if(document.getElementById("search") != null){
+      this.searchChanged(document.getElementById("search").value);
     }
 
     //modal for when an item is clicked checks
@@ -119,30 +102,6 @@ class Dashboard extends Component {
       this.state.modal_button_function = function(username, id){};
     }
     //***********************************
-
-    if(this.state.read_more){
-      //show 'Show less' if the comics are 10 or less in the unread
-      if(this.props.read.length < 11){
-        this.state.read_more_message = "Show less"
-      } else {
-        this.state.read_more_message = "Show all"
-      }
-      //show animation and show 2 rows
-      this.read_style = styles.read_div_more      
-    } else {
-      //if the show more button is not clicked
-      //but if the message showed 'show less' (the window was opened by user)
-      if(this.state.read_more_message === "Show less"){
-        //close it with animation and show 'Show more'
-        this.read_style = styles.read_div_less
-        this.state.read_more_message = "Show More";
-      } else {
-        //if the window was never opened by the user, show it defaulted
-        this.read_style = styles.read_div              
-      }
-    }
-    //**********************************************
-
     //search modal checks
     if(this.props.search){
       this.searchStyle = styles.modal_open
@@ -155,153 +114,130 @@ class Dashboard extends Component {
       }
       this.lastSearch = false;      
     }
-        
-    //**********************************************
-    if(this.props.unread != null && this.props.unread.length == 0){
-      unread_message = "No comic books added to library yet or there are no unread comics."      
-    } else {
-      unread_message = ""  
-      listItems = this.props.unread.map((item) => { 
-         var comicMiddleStyle = styles.comic_middle 
-         var comicButtonStyleLoc = styles.comic_buttons
-         if(this.state.comicButtonStyleID == item.id && this.state.comicButtonStyle && this.state.unread_hover){
-           comicMiddleStyle = styles.comic_middle_hover
-           comicButtonStyleLoc = styles.comic_buttons_hover
-         } else if((this.state.last_comic_id == item.id) && (this.state.last_comic_type === "unread")){
-          comicMiddleStyle = styles.comic_middle_hover_out
-          comicButtonStyleLoc = styles.comic_buttons_hover_out
-         }
-          return (
-            <div onMouseLeave={() => {this.setState({"last_comic_type": "unread", "comicButtonStyle": false,"unread_hover": false})}} onMouseEnter={() => {this.setState({"comicButtonStyle": true, "comicButtonStyleID": item.id, "unread_hover": true})}}  className="comic_container" key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
-              <h4 style={{"fontSize": "14px", "margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
-              <img src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 265px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
-              <div onClick={() => {this.setState({"modal_state": "block", "modal_comic": item, "modal_open": true})}} style={comicMiddleStyle}>
-              </div>
-              <div style={comicButtonStyleLoc}>
-                <input onClick={() => {
-                  this.state.last_comic_type = "read"
-                  this.props.switchToRead(this.props.username, item.id)}} type="button" value="Read" style={{"float": "left","height": "40px", "color": "white", "width": "50%", "backgroundColor": "#7CB27C"}}/>
-                <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item, "Unread")}} value="Delete"  style={{"float": "left","height": "40px", "backgroundColor": "#ff6666", "color": "white", "width": "50%"}}/>
-              </div>
-            </div>)    
-      })     
-    }
-
-    if(this.props.library != null && this.props.library.length == 0){
-      library_message = "No comic books added to library yet."      
-    } else {
-      library_message = ""  
-      libraryListItems = this.props.library.map((item) => {
-        var comicMiddleStyle = styles.comic_middle 
-        var comicButtonStyleLoc = styles.comic_buttons
-        if(this.state.comicButtonStyleID == item.id && this.state.comicButtonStyle && this.state.library_hover){
-          comicMiddleStyle = styles.comic_middle_hover
-          comicButtonStyleLoc = styles.comic_buttons_hover
-        } else if((this.state.last_comic_id == item.id) && (this.state.last_comic_type === "library")){
-         comicMiddleStyle = styles.comic_middle_hover_out
-         comicButtonStyleLoc = styles.comic_buttons_hover_out
-        }
-         return (
-           <div onMouseLeave={() => {this.setState({"last_comic_type": "library", "comicButtonStyle": false,"library_hover": false})}} onMouseEnter={() => {this.setState({"comicButtonStyle": true, "comicButtonStyleID": item.id, "library_hover": true})}}  className="comic_container" key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
-             <h4 style={{"fontSize": "14px", "margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
-             <img src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 265px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
-             <div onClick={() => {this.setState({"modal_state": "block", "modal_comic": item, "modal_open": true})}} style={comicMiddleStyle}>
-             </div>
-           </div>)    
-      })     
-    }
-
-    if(this.props.read != null && this.props.read.length == 0){
-      read_message = "No comic books added to library yet or there are no unread comics."      
-    } else {
-      read_message = ""  
-      readListItems = this.props.read.map((item) =>{
-        var comicMiddleStyle = styles.comic_middle 
-        var comicButtonStyleLoc = styles.comic_buttons
-        if(this.state.comicButtonStyleID == item.id && this.state.comicButtonStyle && this.state.read_hover){
-          comicMiddleStyle = styles.comic_middle_hover
-          comicButtonStyleLoc = styles.comic_buttons_hover
-        } else if((this.state.last_comic_id == item.id) && (this.state.last_comic_type === "read")){
-         comicMiddleStyle = styles.comic_middle_hover_out
-         comicButtonStyleLoc = styles.comic_buttons_hover_out
-        }
-         return (
-           <div onMouseLeave={() => {this.setState({"last_comic_type": "read", "comicButtonStyle": false,"read_hover": false})}} onMouseEnter={() => {this.setState({"comicButtonStyle": true, "comicButtonStyleID": item.id, "read_hover": true})}}  className="comic_container" key={item.id} style={{"verticalAlign": "baseline", "float": "left", "width": "18%","height": "300px", "border": "1px solid black", "marginLeft": "1.7%", "textAlign": "center", "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}> 
-             <h4 style={{"fontSize": "14px", "margin": "0 auto", "width": "90%", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "overflow": "hidden", "padding": "0px","height": "20px", "marginTop": "5px"}}>{item.title}</h4>
-             <img src={item.thumbnail.path + '/portrait_incredible.' + item.thumbnail.extension} style={{"objectFit": "fill", "width": "90%", "align": "top", "height":" 265px", "verticalAlign": "baseline", "marginTop": "5px"}}/>
-             <div onClick={() => {
-               this.state.last_comic_type = "unread"                                 
-               this.setState({"modal_state": "block", "modal_comic": item, "modal_open": true})}} style={comicMiddleStyle}>
-             </div>
-             <div style={comicButtonStyleLoc}>
-                <input onClick={() => {this.props.switchToUnread(this.props.username, item.id)}} type="button" value="Unread" style={{"float": "left","height": "40px", "color": "white", "width": "50%", "backgroundColor": "#7CB27C"}}/>
-                <input type="button" onClick={() => {this.props.deleteComic(this.props.username, item, "Read")}} value="Delete"  style={{"float": "left","height": "40px", "backgroundColor": "#ff6666", "color": "white", "width": "50%"}}/>
-              </div>
-           </div>)  
-      })     
-    }
 
     //if the user isn't logged in yet display Login page
     if(!this.props.logged_in){
       return (<Redirect push to="/"/>)
     }
 
-    if(this.state.unread_nav){
-      return (<Redirect push to="/unread"/>)
-    }
-
-    return (
-      <div className="one_nav">
-        <div style={this.searchStyle}>
+    if(this.state.nav_controller == "library"){
+      this.unread_nav_class = "unread_nav_unclicked"
+      this.read_nav_class = "read_nav_unclicked"
+      this.library_nav_class = "library_nav_clicked"  
+      this.nav_background_color = "#3882b7"
+      this.page_background_color = "rgba(56, 130, 183, .2)"
+      if(this.state.nav_last_clicked == ""){
+        this.nav_animation = "none"
+      } else if(this.state.nav_last_clicked == "unread"){
+        this.nav_animation = "navToLibraryFromUnread"
+      } else if(this.state.nav_last_clicked == "read"){
+        this.nav_animation = "navToLibraryFromRead"          
+      }
+      this.state.nav_last_clicked = "library"
+      this.navController = (props) => {        
+        return (
+          <Library
+            library={this.props.library}
+            setMainState={(state) => this.setState(state)}
+            />
+        );
+      }
+    } else if(this.state.nav_controller == "unread"){
+      this.nav_background_color = "#a33934"  
+      this.page_background_color = "rgba(163, 57, 52, .2)"        
+      this.unread_nav_class = "unread_nav_clicked" 
+      this.read_nav_class = "read_nav_unclicked"
+      this.library_nav_class = "library_nav_unclicked"
+      if(this.state.nav_last_clicked == ""){
+        this.nav_animation = "none"
+      } else if(this.state.nav_last_clicked == "read"){
+        this.nav_animation = "navToUnreadFromRead"
+      } else if(this.state.nav_last_clicked == "library"){
+        this.nav_animation = "navToUnreadFromLibrary"          
+      }
+      this.state.nav_last_clicked = "unread"        
+      this.navController = (props) => {
+        return (
+          <Unread
+            unread={this.props.unread}
+            setMainState={(state) => this.setState(state)}
+            />
+        );
+      }
+    } else if(this.state.nav_controller == "search"){
+      this.navController = (props) => {
+        return (
           <Search
             hideSearchModal={() => this.props.hideSearchModal()}
-            searchComic={(event) => this.props.store.dispatch({"type": "SEARCH", data: {"searchString": event.target.value}})}
+            searchComic={(searchString, digitalOnly) => this.props.store.dispatch({"type": "SEARCH", data: {"searchString": searchString, "digitalOnly": digitalOnly}})}
             comicData={this.props.store.getState().search.comicData}
             addComic={(username, comic) => this.props.addComic(username, comic)}
             username={this.props.username}
             showComic={(item) => this.setState({"modal_state": "block", "modal_comic": item})}
+            setMainState={(state) => this.setState(state)}
           />
-        </div>
+        );
+      }
+    } else {
+      this.nav_background_color = "#929547"        
+      this.unread_nav_class = "unread_nav_unclicked"     
+      this.read_nav_class = "read_nav_clicked"
+      this.library_nav_class = "library_nav_unclicked" 
+      this.page_background_color = "rgba(146, 149, 71, .2)"                
+      if(this.state.nav_last_clicked == ""){
+        this.nav_animation = "none"
+      } else if(this.state.nav_last_clicked == "library"){
+        this.nav_animation = "navToReadFromLibrary"
+      } else if(this.state.nav_last_clicked == "unread"){
+        this.nav_animation = "navToReadFromUnread"          
+      }
+      this.state.nav_last_clicked = "read"        
+      this.navController = (props) => {
+        return (
+          <Read
+            read={this.props.read}
+            setMainState={(state) => this.setState(state)}
+            />
+        );
+      }
+    }
+
+    const nav_bar_style = {"animation": this.nav_animation + " 1s", "backgroundColor":this.nav_background_color, height: "70px", lineHeight: "70px"}      
+
+    return (
+      <div style={{backgroundColor: this.page_background_color, minHeight: "92vh", animation: this.nav_animation + "Body 1s"}}>
         <div style={nav_bar_style}>
           <div style={link_style}>
-            Dashboard
+          <h4 style={{"height": "70px", "lineHeight":"70px", "width": "300px"}}>
+            My Comic Collection
+          </h4>
           </div>
-          <div style={{"float": "left", "width": "90%", "height": "35px", "marginTop": "8px", "paddingRight": "5%"}}>
-            <input onClick={() => this.props.logout()} className="dashboard_nav_button_logout" type="button" value="Logout"/>
-            <input onClick={() => this.props.showSearchModal()} className="dashboard_nav_button_logout" type="button" value="+ Add Comic"/>
+          <div style={{"float": "left", "width": "90%", "marginTop": "8px", "paddingRight": "5%", "marginTop": "20px"}}>
+            <input onClick={() => this.props.logout()} style={styles.nav_buttons} type="button" value="Logout"/>
+            <input value="Search" type="button" style={styles.nav_button_search_button} onClick={() => {
+                    var searchString = document.getElementById("search").value                                          
+                    this.props.searchComic(searchString, false)}}/>
+            <input onChange={() => {
+              var searchString = document.getElementById("search").value
+              if(searchString.length == 0){
+                this.setState({"nav_controller": this.state.nav_last_clicked})
+              }
+            }} style={styles.nav_button_search} id="search" type="input" placeholder="Search..."/>
           </div>
         </div>
         <div>
-          <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>
-            My Library {this.props.library.length}
+          <div style={{"width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "rgb(0, 184, 230)"}}>
+            <div onClick={() => this.setState({nav_controller: "library"})} className={this.library_nav_class}>
+            My Library ({this.props.library.length})
+            </div>
+            <div onClick={() => this.setState({nav_controller: "unread"})} className={this.unread_nav_class}>
+            Unread ({this.props.unread.length})
+            </div>
+            <div onClick={() => this.setState({nav_controller: "read"})} className={this.read_nav_class}>
+            Read ({this.props.read.length})
+            </div>
           </div>
-          <div style={styles.library_div}>
-          {library_message}
-          {libraryListItems}
-          </div>
-          <div style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
-            More
-          </div>
-          <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>
-            Unread {this.props.unread.length}
-          </div>
-          <div style={this.unread_style}>
-            {unread_message}
-            {listItems}
-          </div>
-          <div onClick={() => {if(this.state.unread_more_message === "Show less"){this.setState({"unread_more": false})}else if(this.state.unread_more_message === "Show all"){this.setState({"unread_nav": true})}else{if(this.props.unread.length > 5){this.setState({"unread_more": true, "unread_more_message": "Show all"})}}}} style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
-            {this.state.unread_more_message}
-          </div>
-          <div style={{"color": "white", "width": "100%", "height": "50px", "lineHeight": "50px", "textAlign": "center", "backgroundColor": "#00B8E6"}}>
-            Read {this.props.read.length}
-          </div>
-          <div style={this.read_style}>
-            {read_message}
-            {readListItems}
-          </div>
-          <div onClick={() => {if(this.state.read_more_message === "Show less"){this.setState({"read_more": false})}else if(this.state.read_more_message === "Show all"){this.setState({"read_nav": true})}else{if(this.props.read.length > 5){this.setState({"read_more": true, "read_more_message": "Show all"})}}}} style={{"color": "white", "height": "20px", "backgroundColor": "#00b8e6", "textAlign": "center", "lineHeight": "20px"}}>
-            {this.state.read_more_message}
-          </div>
+          <this.navController/>
         </div>
         <div style={this.modal_style} id="comicModal" tabindex="-1" role="dialog" aria-hidden="true">
           <div className="modal-dialog" role="document" style={{"opacity": "1"}}>  
@@ -353,6 +289,16 @@ class Dashboard extends Component {
         </div>
       </div>
     );
+  }
+
+  searchChanged(text){
+    if(text.length > 1 && this.props.comicData != null && this.props.comicData.count > 0){
+      this.state.nav_controller = "search"
+    } else {
+      if(this.state.nav_last_clicked != "" && text.length > 0){
+        this.state.nav_controller = this.state.nav_last_clicked            
+      }
+    }
   }
 }
 
